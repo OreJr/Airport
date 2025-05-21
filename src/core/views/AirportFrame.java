@@ -99,8 +99,8 @@ public class AirportFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelRoundMiddle = new core.models.PanelRound();
-        panelRoundUp = new core.models.PanelRound();
+        panelRoundMiddle = new core.views.PanelRound();
+        panelRoundUp = new core.views.PanelRound();
         jButtonClose = new javax.swing.JButton();
         jTabbedPane = new javax.swing.JTabbedPane();
         jPanelAdministration = new javax.swing.JPanel();
@@ -237,7 +237,7 @@ public class AirportFrame extends javax.swing.JFrame {
         jLabelMinutesDelayFlight = new javax.swing.JLabel();
         jComboBoxMinute = new javax.swing.JComboBox<>();
         jButtonDelay = new javax.swing.JButton();
-        panelRoundDown = new core.models.PanelRound();
+        panelRoundDown = new core.views.PanelRound();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -1810,8 +1810,8 @@ public class AirportFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldPrefix;
     private javax.swing.JTextField jTextFieldPrefixUserRegister;
     private javax.swing.JTextField jTextFieldYearRegister;
-    private core.models.PanelRound panelRoundDown;
-    private core.models.PanelRound panelRoundMiddle;
-    private core.models.PanelRound panelRoundUp;
+    private core.views.PanelRound panelRoundDown;
+    private core.views.PanelRound panelRoundMiddle;
+    private core.views.PanelRound panelRoundUp;
     // End of variables declaration//GEN-END:variables
 }
