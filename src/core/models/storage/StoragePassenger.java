@@ -11,20 +11,20 @@ import java.util.ArrayList;
  *
  * @author OreJr
  */
-public class Storage {
+public class StoragePassenger {
     // Instancia Singleton
-    private static Storage instance;
+    private static StoragePassenger instance;
     
     // Atributos del Storage
     private ArrayList<Passenger> passengers;
     
-    private Storage() {
+    private StoragePassenger() {
         this.passengers = new ArrayList<>();
     }
     
-    public static Storage getInstance() {
+    public static StoragePassenger getInstance() {
         if (instance == null) {
-            instance = new Storage();
+            instance = new StoragePassenger();
         }
         return instance;
     }
@@ -47,4 +47,5 @@ public class Storage {
         }
         return null;
     }
+    
 }
