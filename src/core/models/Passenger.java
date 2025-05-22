@@ -99,7 +99,7 @@ public class Passenger {
      * Esto previene modificaciones externas directas a la lista interna.
      * @return Una nueva lista conteniendo los vuelos del pasajero.
      */
-    public List<Flight> getFlights() { 
+    public ArrayList<Flight> getFlights() { 
         return new ArrayList<>(this.flights); // Devuelve una copia de la lista
     }
 

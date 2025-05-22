@@ -10,6 +10,7 @@ import core.models.Flight;
 import core.models.Location;
 import core.models.Passenger;
 import core.models.Plane;
+import core.models.storage.StoragePassenger;
 import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -1625,11 +1626,12 @@ public class AirportFrame extends javax.swing.JFrame {
         long passengerId = Long.parseLong(JComboBoxUserSelect.getItemAt(JComboBoxUserSelect.getSelectedIndex()));
 
         Passenger passenger = null;
-        for (Passenger p : this.passengers) {
-            if (p.getId() == passengerId) {
-                passenger = p;
-            }
-        }
+//        for (Passenger p : this.passengers) {
+//            if (p.getId() == passengerId) {
+//                passenger = p;
+//            }
+//        }
+        passenger = StoragePassenger.getInstance().getPassenger(passengerId);
 
         ArrayList<Flight> flights = passenger.getFlights();
         DefaultTableModel model = (DefaultTableModel) jTableUserFlights.getModel();

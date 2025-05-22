@@ -6,7 +6,6 @@ package core.models;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -183,7 +182,7 @@ public class Flight {
         return passengers.size();
     }
 
-    public Iterable<Passenger> getPassengers() {
-        throw new UnsupportedOperationException("Not supported yetaS."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+//    public Iterable<Passenger> getPassengers() {
+//        throw new UnsupportedOperationException("Not supported yetaS."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
 }
