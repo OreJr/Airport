@@ -4,7 +4,10 @@
  */
 package core.views;
 
+import core.controllers.FlightController;
+import core.controllers.LocationController;
 import core.controllers.PassengerControler;
+import core.controllers.PlaneController;
 import core.controllers.utils.Response;
 import core.models.Flight;
 import core.models.Location;
@@ -28,19 +31,18 @@ public class AirportFrame extends javax.swing.JFrame {
      * Creates new form AirportFrame
      */
     private int x, y;
-    private ArrayList<Passenger> passengers;
-    private ArrayList<Plane> planes;
-    private ArrayList<Location> locations;
-    private ArrayList<Flight> flights;
+//    private ArrayList<Passenger> passengers;
+//    private ArrayList<Plane> planes;
+//    private ArrayList<Location> locations;
+//    private ArrayList<Flight> flights;
 
     public AirportFrame() {
         initComponents();
 
-        this.passengers = new ArrayList<>();
-        this.planes = new ArrayList<>();
-        this.locations = new ArrayList<>();
-        this.flights = new ArrayList<>();
-
+//        this.passengers = new ArrayList<>();
+//        this.planes = new ArrayList<>();
+//        this.locations = new ArrayList<>();
+//        this.flights = new ArrayList<>();
         this.setBackground(new Color(0, 0, 0, 0));
         this.setLocationRelativeTo(null);
 
@@ -1414,7 +1416,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
         }
         for (int i = 1; i < jTabbedPane.getTabCount(); i++) {
-                jTabbedPane.setEnabledAt(i, true);
+            jTabbedPane.setEnabledAt(i, true);
         }
         jTabbedPane.setEnabledAt(5, false);
         jTabbedPane.setEnabledAt(6, false);
@@ -1447,30 +1449,32 @@ public class AirportFrame extends javax.swing.JFrame {
         int phoneCode = Integer.parseInt(jTextFieldPrefixUserRegister.getText());
         long phone = Long.parseLong(jTextFieldPhoneUserRegister.getText());
         String country = jTextFieldCountryUserRegister.getText();
-        
-        Response response = PassengerControler.createPassenger(id, firstname, lastname,year,month,day,phoneCode,phone,country);
-        
+
+        Response response = PassengerControler.createPassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
+
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
         } else if (response.getStatus() >= 400) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
-            
+
             jTextFieldIDUserRegister.setText("");
             jTextFieldFirstNameUserRegister.setText("");
             jTextFieldLastNameUserRegister.setText("");
             jTextFieldYearRegister.setText("");
+            JComboBoxMonthUserRegister.setSelectedItem("Month");
+            JComboBoxDayUserRegister.setSelectedItem("Day");
             jTextFieldPrefixUserRegister.setText("");
             jTextFieldPhoneUserRegister.setText("");
             jTextFieldCountryUserRegister.setText("");
+
             this.JComboBoxUserSelect.addItem("" + id);
         }
 
         //LocalDate birthDate = LocalDate.of(year, month, day);
-
         //this.passengers.add(new Passenger(id, firstname, lastname, birthDate, phoneCode, phone, country));
-        
+
     }//GEN-LAST:event_jButtonRegisterPassengerPassengerActionPerformed
 
     private void jButtonCreateAirPlaneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateAirPlaneActionPerformed
@@ -1481,9 +1485,24 @@ public class AirportFrame extends javax.swing.JFrame {
         int maxCapacity = Integer.parseInt(jTextFieldMaxCapacityAirPlaneRegister.getText());
         String airline = jTextFieldAirlineAirPlaneRegister.getText();
 
-        this.planes.add(new Plane(id, brand, model, maxCapacity, airline));
+//        this.planes.add(new Plane(id, brand, model, maxCapacity, airline));
+        Response response = PlaneController.createPlane(id, brand, model, maxCapacity, airline);
 
-        this.jComboBoxPlaneFlightRegister.addItem(id);
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+
+            jTextFieldIDAirPlaneRegister.setText("");
+            jTextFieldBrandAirPlaneRegister.setText("");
+            jTextFieldModelAirPlaneRegister.setText("");
+            jTextFieldMaxCapacityAirPlaneRegister.setText("");
+            jTextFieldAirlineAirPlaneRegister.setText("");
+
+            this.jComboBoxPlaneFlightRegister.addItem(id);
+        }
     }//GEN-LAST:event_jButtonCreateAirPlaneActionPerformed
 
     private void jButtonCreateLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateLocationActionPerformed
@@ -1495,11 +1514,27 @@ public class AirportFrame extends javax.swing.JFrame {
         double latitude = Double.parseDouble(jTextFieldAirportLatitude.getText());
         double longitude = Double.parseDouble(jTextFieldAirportLongitude.getText());
 
-        this.locations.add(new Location(id, name, city, country, latitude, longitude));
+        //  this.locations.add(new Location(id, name, city, country, latitude, longitude));
+        Response response = LocationController.createLocation(id, name, city, country, latitude, longitude);
 
-        this.jComboBoxDepartureLocationFlightRegister.addItem(id);
-        this.jComboBoxArrivalLocationFlightRegister.addItem(id);
-        this.jComboBoxScaleLocationFlightRegister.addItem(id);
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+
+            jTextFieldAirportID.setText("");
+            jTextFieldAirportName.setText("");
+            jTextFieldAirportCity.setText("");
+            jTextFieldAirportCountry.setText("");
+            jTextFieldAirportLatitude.setText("");
+            jTextFieldAirportLongitude.setText("");
+
+            this.jComboBoxDepartureLocationFlightRegister.addItem(id);
+            this.jComboBoxArrivalLocationFlightRegister.addItem(id);
+            this.jComboBoxScaleLocationFlightRegister.addItem(id);
+        }
     }//GEN-LAST:event_jButtonCreateLocationActionPerformed
 
     private void jButtonCreateFlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateFlightActionPerformed
@@ -1519,37 +1554,65 @@ public class AirportFrame extends javax.swing.JFrame {
         int hoursDurationsScale = Integer.parseInt(JComboBoxHourScale.getItemAt(JComboBoxHourScale.getSelectedIndex()));
         int minutesDurationsScale = Integer.parseInt(JComboBoxMinuteScale.getItemAt(JComboBoxMinuteScale.getSelectedIndex()));
 
-        LocalDateTime departureDate = LocalDateTime.of(year, month, day, hour, minutes);
+        Response response = FlightController.createFlight(id, planeId, departureLocationId, arrivalLocationId,
+                scaleLocationId, year, month, day, hour, minutes, hoursDurationsArrival,
+                minutesDurationsArrival, hoursDurationsScale,
+                minutesDurationsScale);
 
-        Plane plane = null;
-        for (Plane p : this.planes) {
-            if (planeId.equals(p.getId())) {
-                plane = p;
-            }
-        }
-
-        Location departure = null;
-        Location arrival = null;
-        Location scale = null;
-        for (Location location : this.locations) {
-            if (departureLocationId.equals(location.getAirportId())) {
-                departure = location;
-            }
-            if (arrivalLocationId.equals(location.getAirportId())) {
-                arrival = location;
-            }
-            if (scaleLocationId.equals(location.getAirportId())) {
-                scale = location;
-            }
-        }
-
-        if (scale == null) {
-            this.flights.add(new Flight(id, plane, departure, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival));
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
-            this.flights.add(new Flight(id, plane, departure, scale, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale));
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+
+            jTextFieldIDFlightRegister.setText("");
+            jComboBoxPlaneFlightRegister.setSelectedItem("Plane");
+            jComboBoxDepartureLocationFlightRegister.setSelectedItem("Location");
+            jComboBoxArrivalLocationFlightRegister.setSelectedItem("Location");
+            jComboBoxDepartureLocationFlightRegister.setSelectedItem("Location");
+            jTextFieldDepartureYear.setText("");
+            JComboBoxDepartureMonth.setSelectedItem("Month");
+            JComboBoxDepartureDay.setSelectedItem("Day");
+            JComboBoxDepartureHour.setSelectedItem("Hour");
+            JComboBoxDepartureMinute.setSelectedItem("Minute");
+            JComboBoxHourArrival.setSelectedItem("Hour");
+            JComboBoxMinuteArrival.setSelectedItem("Minute");
+            JComboBoxHourScale.setSelectedItem("Hour");
+            JComboBoxMinuteScale.setSelectedItem("Minute");
+
+            this.jComboBoxFlight.addItem(id);
         }
 
-        this.jComboBoxFlight.addItem(id);
+//        LocalDateTime departureDate = LocalDateTime.of(year, month, day, hour, minutes);
+//
+//        Plane plane = null;
+//        for (Plane p : this.planes) {
+//            if (planeId.equals(p.getId())) {
+//                plane = p;
+//            }
+//        }
+//
+//        Location departure = null;
+//        Location arrival = null;
+//        Location scale = null;
+//        for (Location location : this.locations) {
+//            if (departureLocationId.equals(location.getAirportId())) {
+//                departure = location;
+//            }
+//            if (arrivalLocationId.equals(location.getAirportId())) {
+//                arrival = location;
+//            }
+//            if (scaleLocationId.equals(location.getAirportId())) {
+//                scale = location;
+//            }
+//        }
+//
+//        if (scale == null) {
+//            this.flights.add(new Flight(id, plane, departure, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival));
+//        } else {
+//            this.flights.add(new Flight(id, plane, departure, scale, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale));
+//        }
     }//GEN-LAST:event_jButtonCreateFlightActionPerformed
 
     private void jButtonUpdateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateUserActionPerformed
@@ -1564,21 +1627,21 @@ public class AirportFrame extends javax.swing.JFrame {
         long phone = Long.parseLong(jTextFieldPhone.getText());
         String country = jTextFieldCountry.getText();
 
-        LocalDate birthDate = LocalDate.of(year, month, day);
-
-        Passenger passenger = null;
-        for (Passenger p : this.passengers) {
-            if (p.getId() == id) {
-                passenger = p;
-            }
-        }
-
-        passenger.setFirstname(firstname);
-        passenger.setLastname(lastname);
-        passenger.setBirthDate(birthDate);
-        passenger.setCountryPhoneCode(phoneCode);
-        passenger.setPhone(phone);
-        passenger.setCountry(country);
+//        LocalDate birthDate = LocalDate.of(year, month, day);
+//
+//        Passenger passenger = null;
+//        for (Passenger p : this.passengers) {
+//            if (p.getId() == id) {
+//                passenger = p;
+//            }
+//        }
+//
+//        passenger.setFirstname(firstname);
+//        passenger.setLastname(lastname);
+//        passenger.setBirthDate(birthDate);
+//        passenger.setCountryPhoneCode(phoneCode);
+//        passenger.setPhone(phone);
+//        passenger.setCountry(country);
     }//GEN-LAST:event_jButtonUpdateUserActionPerformed
 
     private void jButtonAddFlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddFlightActionPerformed
@@ -1684,18 +1747,17 @@ public class AirportFrame extends javax.swing.JFrame {
     private void JComboBoxUserSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JComboBoxUserSelectActionPerformed
         try {
             String id = JComboBoxUserSelect.getSelectedItem().toString();
-            if (! id.equals(JComboBoxUserSelect.getItemAt(0))) {
+            if (!id.equals(JComboBoxUserSelect.getItemAt(0))) {
                 jTextFieldIDUser.setText(id);
                 jTextFieldIDAddFlight.setText(id);
-            }
-            else{
+            } else {
                 jTextFieldIDUser.setText("");
                 jTextFieldIDAddFlight.setText("");
             }
         } catch (Exception e) {
         }
     }//GEN-LAST:event_JComboBoxUserSelectActionPerformed
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JComboBoxDay;
