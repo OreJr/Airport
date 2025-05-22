@@ -5,6 +5,8 @@
 package core.models;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List; 
 
 /**
  *
@@ -17,7 +19,7 @@ public class Plane {
     private String model;
     private final int maxCapacity;
     private String airline;
-    private ArrayList<Flight> flights;
+    private List<Flight> flights; 
 
     public Plane(String id, String brand, String model, int maxCapacity, String airline) {
         this.id = id;
@@ -28,8 +30,32 @@ public class Plane {
         this.flights = new ArrayList<>();
     }
 
+    // Constructor de copia (necesario para el patrón Prototype)
+    public Plane(Plane originalInstance) {
+        this.id = originalInstance.id;
+        this.brand = originalInstance.brand;
+        this.model = originalInstance.model;
+        this.maxCapacity = originalInstance.maxCapacity;
+        this.airline = originalInstance.airline;
+        this.flights = new ArrayList<>();
+        if (originalInstance.flights != null) {
+            for(Flight f : originalInstance.flights) {
+                this.flights.add(new Flight(f)); 
+            }
+        }
+    }
+
     public void addFlight(Flight flight) {
-        this.flights.add(flight);
+        boolean exists = false;
+        for (Flight existingFlight : this.flights) {
+            if (existingFlight.getId().equals(flight.getId())) { 
+                exists = true;
+                break;
+            }
+        }
+        if (!exists) {
+            this.flights.add(flight);
+        }
     }
     
     public String getId() {
@@ -52,12 +78,16 @@ public class Plane {
         return airline;
     }
 
-    public ArrayList<Flight> getFlights() {
-        return flights;
+    /**
+     * Devuelve una copia de la lista de vuelos asociados a este avión.
+     * Esto previene modificaciones externas directas a la lista interna.
+     * @return Una nueva lista conteniendo los vuelos del avión.
+     */
+    public List<Flight> getFlights() { 
+        return new ArrayList<>(this.flights); // Devuelve una copia de la lista
     }
     
     public int getNumFlights() {
         return flights.size();
     }
-    
 }

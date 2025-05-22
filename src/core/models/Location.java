@@ -26,6 +26,16 @@ public class Location {
         this.airportLongitude = airportLongitude;
     }
 
+    // Constructor de copia (necesario para el patrón Prototype)
+    public Location(Location originalInstance) {
+        this.airportId = originalInstance.airportId;
+        this.airportName = originalInstance.airportName;
+        this.airportCity = originalInstance.airportCity;
+        this.airportCountry = originalInstance.airportCountry;
+        this.airportLatitude = originalInstance.airportLatitude;
+        this.airportLongitude = originalInstance.airportLongitude;
+    }
+
     public String getAirportId() {
         return airportId;
     }
@@ -49,5 +59,4 @@ public class Location {
     public double getAirportLongitude() {
         return airportLongitude;
     }
-    
 }

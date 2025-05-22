@@ -7,6 +7,8 @@ package core.models;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -21,7 +23,7 @@ public class Passenger {
     private int countryPhoneCode;
     private long phone;
     private String country;
-    private ArrayList<Flight> flights;
+    private List<Flight> flights;
 
     public Passenger(long id, String firstname, String lastname, LocalDate birthDate, int countryPhoneCode, long phone, String country) {
         this.id = id;
@@ -34,8 +36,34 @@ public class Passenger {
         this.flights = new ArrayList<>();
     }
 
+    // Constructor de copia (necesario para el patrón Prototype)
+    public Passenger(Passenger originalInstance) {
+        this.id = originalInstance.id;
+        this.firstname = originalInstance.firstname;
+        this.lastname = originalInstance.lastname;
+        this.birthDate = originalInstance.birthDate; 
+        this.countryPhoneCode = originalInstance.countryPhoneCode;
+        this.phone = originalInstance.phone;
+        this.country = originalInstance.country;
+        this.flights = new ArrayList<>();
+        if (originalInstance.flights != null) {
+            for(Flight f : originalInstance.flights){
+                this.flights.add(new Flight(f)); 
+            }
+        }
+    }
+
     public void addFlight(Flight flight) {
-        this.flights.add(flight);
+        boolean exists = false;
+        for (Flight existingFlight : this.flights) {
+            if (existingFlight.getId().equals(flight.getId())) { 
+                exists = true;
+                break;
+            }
+        }
+        if (!exists) {
+            this.flights.add(flight);
+        }
     }
     
     public long getId() {
@@ -66,8 +94,13 @@ public class Passenger {
         return country;
     }
 
-    public ArrayList<Flight> getFlights() {
-        return flights;
+    /**
+     * Devuelve una copia de la lista de vuelos asociados a este pasajero.
+     * Esto previene modificaciones externas directas a la lista interna.
+     * @return Una nueva lista conteniendo los vuelos del pasajero.
+     */
+    public List<Flight> getFlights() { 
+        return new ArrayList<>(this.flights); // Devuelve una copia de la lista
     }
 
     public void setFirstname(String firstname) {
@@ -103,11 +136,11 @@ public class Passenger {
     }
     
     public int calculateAge() {
+        if (this.birthDate == null) return 0; 
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
     
     public int getNumFlights() {
         return flights.size();
     }
-    
 }

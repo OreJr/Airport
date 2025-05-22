@@ -6,6 +6,7 @@ package core.models.storage;
 
 import core.models.Passenger;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -46,6 +47,14 @@ public class StoragePassenger {
             }
         }
         return null;
+    }
+
+    public Passenger getOriginalPassenger(long passengerId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public List<Passenger> getAllPassengers() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }
