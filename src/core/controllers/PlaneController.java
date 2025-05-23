@@ -7,7 +7,7 @@ package core.controllers;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Plane;
-import core.models.storage.StoragePlane; 
+import core.models.storage.StoragePlane;
 import java.util.List;
 
 /**
@@ -16,24 +16,24 @@ import java.util.List;
  */
 public class PlaneController {
 
-
-
     /**
-     * Valida el formato del ID de un avión (XX00000: 2 letras mayúsculas seguidas de 5 dígitos).
+     * Valida el formato del ID de un avión (XX00000: 2 letras mayúsculas
+     * seguidas de 5 dígitos).
+     *
      * @param id El ID a validar.
      * @return true si el formato es válido, false en caso contrario.
      */
     private static boolean isValidPlaneIdFormat(String id) {
-        if (id == null || id.length() != 7) { 
+        if (id == null || id.length() != 7) {
             return false;
         }
-        for (int i = 0; i < 2; i++) { 
+        for (int i = 0; i < 2; i++) {
             char c = id.charAt(i);
             if (!Character.isUpperCase(c)) {
                 return false;
             }
         }
-        for (int i = 2; i < 7; i++) { 
+        for (int i = 2; i < 7; i++) {
             char c = id.charAt(i);
             if (!Character.isDigit(c)) {
                 return false;
@@ -56,12 +56,17 @@ public class PlaneController {
             if (airline == null || airline.trim().isEmpty()) {
                 return new Response("Airline must not be empty.", Status.BAD_REQUEST);
             }
-            if (maxCapacity <= 0) {
-                return new Response("Maximum capacity must be positive.", Status.BAD_REQUEST);
+            int intMaxCapacity;
+            try {
+                intMaxCapacity = Integer.parseInt(maxCapacity);
+                if (intMaxCapacity <= 0) {
+                    return new Response("Maximum capacity must be positive.", Status.BAD_REQUEST);
+                }
+            } catch (NumberFormatException ex) {
+                return new Response("maxCapacity must be numeric", Status.BAD_REQUEST);
             }
-
             StoragePlane storage = StoragePlane.getInstance();
-            Plane newPlane = new Plane(id, brand.trim(), model.trim(), maxCapacity, airline.trim());
+            Plane newPlane = new Plane(id, brand.trim(), model.trim(), intMaxCapacity, airline.trim());
 
             if (!storage.addPlane(newPlane)) {
                 return new Response("A plane with that ID already exists.", Status.BAD_REQUEST);
@@ -77,7 +82,7 @@ public class PlaneController {
             return new Response("Plane ID must follow format XXYYYYY.", Status.BAD_REQUEST);
         }
         StoragePlane storage = StoragePlane.getInstance();
-        Plane plane = storage.getPlane(id); 
+        Plane plane = storage.getPlane(id);
         if (plane == null) {
             return new Response("Plane not found.", Status.NOT_FOUND);
         }
@@ -87,7 +92,7 @@ public class PlaneController {
     public static Response getAllPlanes() {
         try {
             StoragePlane storage = StoragePlane.getInstance();
-            List<Plane> planes = storage.getAllPlanes(); 
+            List<Plane> planes = storage.getAllPlanes();
             return new Response("Planes retrieved successfully.", Status.OK, planes);
         } catch (Exception ex) {
             return new Response("Unexpected error retrieving planes: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);

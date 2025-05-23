@@ -78,7 +78,7 @@ public class PassengerControler {
                     return new Response("Invalid phone number (must be non-negative, max 11 digits).", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("birthdate must be numeric", Status.BAD_REQUEST);
+                return new Response("phone must be numeric", Status.BAD_REQUEST);
             }
 
             StoragePassenger storage = StoragePassenger.getInstance();
@@ -150,7 +150,7 @@ public class PassengerControler {
                     return new Response("Invalid phone number (must be non-negative, max 11 digits).", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("birthdate must be numeric", Status.BAD_REQUEST);
+                return new Response("phone must be numeric", Status.BAD_REQUEST);
             }
 
             StoragePassenger storage = StoragePassenger.getInstance();
