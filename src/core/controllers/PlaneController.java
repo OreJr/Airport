@@ -42,7 +42,7 @@ public class PlaneController {
         return true;
     }
 
-    public static Response createPlane(String id, String brand, String model, int maxCapacity, String airline) {
+    public static Response createPlane(String id, String brand, String model, String maxCapacity, String airline) {
         try {
             if (!isValidPlaneIdFormat(id)) {
                 return new Response("Plane ID must follow format XXYYYYY (e.g., AB12345).", Status.BAD_REQUEST);

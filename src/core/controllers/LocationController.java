@@ -58,7 +58,7 @@ public class LocationController {
         }
     }
 
-    public static Response createLocation(String airportId, String airportName, String airportCity, String airportCountry, double airportLatitude, double airportLongitude) {
+    public static Response createLocation(String airportId, String airportName, String airportCity, String airportCountry, String airportLatitude, String airportLongitude) {
         try {
             if (!isValidAirportIdFormat(airportId)) {
                 return new Response("Airport ID must be 3 uppercase letters.", Status.BAD_REQUEST);

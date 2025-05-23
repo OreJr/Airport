@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class PassengerControler {
 
-    public static Response createPassenger(long id, String firstname, String lastname, int year, int month, int day, int phoneCode, long phone, String country) {
+    public static Response createPassenger(String id, String firstname, String lastname, String year, String month, String day, String phoneCode, String phone, String country) {
         try {
             if (id < 0) {
                 return new Response("Passenger ID must be non-negative.", Status.BAD_REQUEST);
@@ -66,7 +66,7 @@ public class PassengerControler {
         }
     }
 
-    public static Response updatePassenger(long id, String firstname, String lastname, int year, int month, int day, int phoneCode, long phone, String country) {
+    public static Response updatePassenger(String id, String firstname, String lastname, String year, String month, String day, String phoneCode, String phone, String country) {
         try {
             if (id < 0) {
                 return new Response("Passenger ID must be non-negative.", Status.BAD_REQUEST);
@@ -113,7 +113,7 @@ public class PassengerControler {
         }
     }
 
-    public static Response getPassengerById(long id) {
+    public static Response getPassengerById(String id) {
         if (id < 0) {
             return new Response("Passenger ID must be non-negative.", Status.BAD_REQUEST);
         }
@@ -135,7 +135,7 @@ public class PassengerControler {
         }
     }
     
-    public static Response getPassengerFlights(long passengerId) {
+    public static Response getPassengerFlights(String passengerId) {
         try {
             if (passengerId < 0) {
                 return new Response("Passenger ID must be non-negative.", Status.BAD_REQUEST);
