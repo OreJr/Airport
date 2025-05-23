@@ -13,9 +13,7 @@ import core.models.Flight;
 import core.models.Location;
 import core.models.Passenger;
 import core.models.Plane;
-import core.models.storage.StoragePassenger;
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -1439,14 +1437,14 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void jButtonRegisterPassengerPassengerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegisterPassengerPassengerActionPerformed
         // TODO add your handling code here:
-        long id = Long.parseLong(jTextFieldIDUserRegister.getText());
+        String id = jTextFieldIDUserRegister.getText();
         String firstname = jTextFieldFirstNameUserRegister.getText();
         String lastname = jTextFieldLastNameUserRegister.getText();
-        int year = Integer.parseInt(jTextFieldYearRegister.getText());
-        int month = Integer.parseInt(JComboBoxMonthUserRegister.getItemAt(JComboBoxMonthUserRegister.getSelectedIndex()));
-        int day = Integer.parseInt(JComboBoxDayUserRegister.getItemAt(JComboBoxDayUserRegister.getSelectedIndex()));
-        int phoneCode = Integer.parseInt(jTextFieldPrefixUserRegister.getText());
-        long phone = Long.parseLong(jTextFieldPhoneUserRegister.getText());
+        String year = jTextFieldYearRegister.getText();
+        String month = JComboBoxMonthUserRegister.getItemAt(JComboBoxMonthUserRegister.getSelectedIndex());
+        String day = JComboBoxDayUserRegister.getItemAt(JComboBoxDayUserRegister.getSelectedIndex());
+        String phoneCode = jTextFieldPrefixUserRegister.getText();
+        String phone = jTextFieldPhoneUserRegister.getText();
         String country = jTextFieldCountryUserRegister.getText();
 
         Response response = PassengerControler.createPassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
@@ -1481,7 +1479,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String id = jTextFieldIDAirPlaneRegister.getText();
         String brand = jTextFieldBrandAirPlaneRegister.getText();
         String model = jTextFieldModelAirPlaneRegister.getText();
-        int maxCapacity = Integer.parseInt(jTextFieldMaxCapacityAirPlaneRegister.getText());
+        String maxCapacity = jTextFieldMaxCapacityAirPlaneRegister.getText();
         String airline = jTextFieldAirlineAirPlaneRegister.getText();
 
 //        this.planes.add(new Plane(id, brand, model, maxCapacity, airline));
@@ -1510,8 +1508,8 @@ public class AirportFrame extends javax.swing.JFrame {
         String name = jTextFieldAirportName.getText();
         String city = jTextFieldAirportCity.getText();
         String country = jTextFieldAirportCountry.getText();
-        double latitude = Double.parseDouble(jTextFieldAirportLatitude.getText());
-        double longitude = Double.parseDouble(jTextFieldAirportLongitude.getText());
+        String latitude = jTextFieldAirportLatitude.getText();
+        String longitude = jTextFieldAirportLongitude.getText();
 
         //  this.locations.add(new Location(id, name, city, country, latitude, longitude));
         Response response = LocationController.createLocation(id, name, city, country, latitude, longitude);
@@ -1543,15 +1541,15 @@ public class AirportFrame extends javax.swing.JFrame {
         String departureLocationId = jComboBoxDepartureLocationFlightRegister.getItemAt(jComboBoxDepartureLocationFlightRegister.getSelectedIndex());
         String arrivalLocationId = jComboBoxArrivalLocationFlightRegister.getItemAt(jComboBoxArrivalLocationFlightRegister.getSelectedIndex());
         String scaleLocationId = jComboBoxScaleLocationFlightRegister.getItemAt(jComboBoxScaleLocationFlightRegister.getSelectedIndex());
-        int year = Integer.parseInt(jTextFieldDepartureYear.getText());
-        int month = Integer.parseInt(JComboBoxDepartureMonth.getItemAt(JComboBoxDepartureMonth.getSelectedIndex()));
-        int day = Integer.parseInt(JComboBoxDepartureDay.getItemAt(JComboBoxDepartureDay.getSelectedIndex()));
-        int hour = Integer.parseInt(JComboBoxDepartureHour.getItemAt(JComboBoxDepartureHour.getSelectedIndex()));
-        int minutes = Integer.parseInt(JComboBoxDepartureMinute.getItemAt(JComboBoxDepartureMinute.getSelectedIndex()));
-        int hoursDurationsArrival = Integer.parseInt(JComboBoxHourArrival.getItemAt(JComboBoxHourArrival.getSelectedIndex()));
-        int minutesDurationsArrival = Integer.parseInt(JComboBoxMinuteArrival.getItemAt(JComboBoxMinuteArrival.getSelectedIndex()));
-        int hoursDurationsScale = Integer.parseInt(JComboBoxHourScale.getItemAt(JComboBoxHourScale.getSelectedIndex()));
-        int minutesDurationsScale = Integer.parseInt(JComboBoxMinuteScale.getItemAt(JComboBoxMinuteScale.getSelectedIndex()));
+        String year = jTextFieldDepartureYear.getText();
+        String month = JComboBoxDepartureMonth.getItemAt(JComboBoxDepartureMonth.getSelectedIndex());
+        String day = JComboBoxDepartureDay.getItemAt(JComboBoxDepartureDay.getSelectedIndex());
+        String hour = JComboBoxDepartureHour.getItemAt(JComboBoxDepartureHour.getSelectedIndex());
+        String minutes = JComboBoxDepartureMinute.getItemAt(JComboBoxDepartureMinute.getSelectedIndex());
+        String hoursDurationsArrival = JComboBoxHourArrival.getItemAt(JComboBoxHourArrival.getSelectedIndex());
+        String minutesDurationsArrival = JComboBoxMinuteArrival.getItemAt(JComboBoxMinuteArrival.getSelectedIndex());
+        String hoursDurationsScale = JComboBoxHourScale.getItemAt(JComboBoxHourScale.getSelectedIndex());
+        String minutesDurationsScale = JComboBoxMinuteScale.getItemAt(JComboBoxMinuteScale.getSelectedIndex());
 
         Response response = FlightController.createFlight(id, planeId, departureLocationId, arrivalLocationId,
                 scaleLocationId, year, month, day, hour, minutes, hoursDurationsArrival,
@@ -1616,14 +1614,14 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void jButtonUpdateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateUserActionPerformed
         // TODO add your handling code here:
-        long id = Long.parseLong(jTextFieldIDUser.getText());
+        String id = jTextFieldIDUser.getText();
         String firstname = jTextFieldFirstName.getText();
         String lastname = jTextFieldLastName.getText();
-        int year = Integer.parseInt(jTextFieldDate.getText());
-        int month = Integer.parseInt(JComboBoxMonthUserRegister.getItemAt(JComboBoxMonth.getSelectedIndex()));
-        int day = Integer.parseInt(JComboBoxDayUserRegister.getItemAt(JComboBoxDay.getSelectedIndex()));
-        int phoneCode = Integer.parseInt(jTextFieldPrefix.getText());
-        long phone = Long.parseLong(jTextFieldPhone.getText());
+        String year = jTextFieldDate.getText();
+        String month = JComboBoxMonthUserRegister.getItemAt(JComboBoxMonth.getSelectedIndex());
+        String day = JComboBoxDayUserRegister.getItemAt(JComboBoxDay.getSelectedIndex());
+        String phoneCode = jTextFieldPrefix.getText();
+        String phone = jTextFieldPhone.getText();
         String country = jTextFieldCountry.getText();
 
         Response response = PassengerControler.updatePassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
@@ -1665,7 +1663,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void jButtonAddFlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddFlightActionPerformed
         // TODO add your handling code here:
-        long passengerId = Long.parseLong(jTextFieldIDAddFlight.getText());
+        String passengerId = jTextFieldIDAddFlight.getText();
         String flightId = jComboBoxFlight.getItemAt(jComboBoxFlight.getSelectedIndex());
 
         Response response = FlightController.addPassengerToFlight(flightId, passengerId);
@@ -1699,8 +1697,8 @@ public class AirportFrame extends javax.swing.JFrame {
     private void jButtonDelayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDelayActionPerformed
         // TODO add your handling code here:
         String flightId = jComboBoxIDDelayFlight.getItemAt(jComboBoxIDDelayFlight.getSelectedIndex());
-        int hours = Integer.parseInt(jComboBoxHour.getItemAt(jComboBoxHour.getSelectedIndex()));
-        int minutes = Integer.parseInt(jComboBoxMinute.getItemAt(jComboBoxMinute.getSelectedIndex()));
+        String hours = jComboBoxHour.getItemAt(jComboBoxHour.getSelectedIndex());
+        String minutes = jComboBoxMinute.getItemAt(jComboBoxMinute.getSelectedIndex());
 
         Response response = FlightController.delayFlight(flightId, hours, minutes);
 
@@ -1726,7 +1724,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void jButtonRefreshMyFlightsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshMyFlightsActionPerformed
         // TODO add your handling code here:
-        long passengerId = Long.parseLong(JComboBoxUserSelect.getItemAt(JComboBoxUserSelect.getSelectedIndex()));
+        String passengerId = JComboBoxUserSelect.getItemAt(JComboBoxUserSelect.getSelectedIndex());
 
 //        Passenger passenger = null;
 //        for (Passenger p : this.passengers) {
