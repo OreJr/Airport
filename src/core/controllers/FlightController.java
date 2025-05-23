@@ -204,7 +204,7 @@ public class FlightController {
                     return new Response("Delay minutes must be < 60.", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("Scale duration must be numeric", Status.BAD_REQUEST);
+                return new Response("Delay time must be numeric", Status.BAD_REQUEST);
             }
 
             StorageFlight flightStorage = StorageFlight.getInstance();
