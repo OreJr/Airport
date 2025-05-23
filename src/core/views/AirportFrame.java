@@ -15,8 +15,6 @@ import core.models.Passenger;
 import core.models.Plane;
 import core.models.storage.StoragePassenger;
 import java.awt.Color;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -198,7 +196,7 @@ public class AirportFrame extends javax.swing.JFrame {
         jLabelLastNameUpdateInfo = new javax.swing.JLabel();
         jTextFieldLastName = new javax.swing.JTextField();
         jLabelBirthdateUpdateInfo = new javax.swing.JLabel();
-        jTextFieldBirthdate = new javax.swing.JTextField();
+        jTextFieldDate = new javax.swing.JTextField();
         JComboBoxMonth = new javax.swing.JComboBox<>();
         JComboBoxDay = new javax.swing.JComboBox<>();
         jTextFieldPhone = new javax.swing.JTextField();
@@ -817,7 +815,7 @@ public class AirportFrame extends javax.swing.JFrame {
         jLabelBirthdateUpdateInfo.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabelBirthdateUpdateInfo.setText("Birthdate:");
 
-        jTextFieldBirthdate.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        jTextFieldDate.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
 
         JComboBoxMonth.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         JComboBoxMonth.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Month" }));
@@ -875,7 +873,7 @@ public class AirportFrame extends javax.swing.JFrame {
                             .addGroup(jPanelUpdateInfoLayout.createSequentialGroup()
                                 .addComponent(jLabelBirthdateUpdateInfo)
                                 .addGap(55, 55, 55)
-                                .addComponent(jTextFieldBirthdate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextFieldDate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(30, 30, 30)
                                 .addComponent(JComboBoxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(34, 34, 34)
@@ -917,7 +915,7 @@ public class AirportFrame extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(jPanelUpdateInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelBirthdateUpdateInfo)
-                    .addComponent(jTextFieldBirthdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JComboBoxMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JComboBoxDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
@@ -1620,12 +1618,32 @@ public class AirportFrame extends javax.swing.JFrame {
         long id = Long.parseLong(jTextFieldIDUser.getText());
         String firstname = jTextFieldFirstName.getText();
         String lastname = jTextFieldLastName.getText();
-        int year = Integer.parseInt(jTextFieldBirthdate.getText());
+        int year = Integer.parseInt(jTextFieldDate.getText());
         int month = Integer.parseInt(JComboBoxMonthUserRegister.getItemAt(JComboBoxMonth.getSelectedIndex()));
         int day = Integer.parseInt(JComboBoxDayUserRegister.getItemAt(JComboBoxDay.getSelectedIndex()));
         int phoneCode = Integer.parseInt(jTextFieldPrefix.getText());
         long phone = Long.parseLong(jTextFieldPhone.getText());
         String country = jTextFieldCountry.getText();
+
+        Response response = PassengerControler.updatePassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
+
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+
+            jTextFieldIDUser.setText("");
+            jTextFieldFirstName.setText("");
+            jTextFieldLastName.setText("");
+            jTextFieldDate.setText("");
+            JComboBoxMonth.setSelectedItem("Month");
+            JComboBoxDay.setSelectedItem("Day");
+            jTextFieldPrefix.setText("");
+            jTextFieldPhone.setText("");
+            jTextFieldCountry.setText("");
+        }
 
 //        LocalDate birthDate = LocalDate.of(year, month, day);
 //
@@ -1648,24 +1666,33 @@ public class AirportFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         long passengerId = Long.parseLong(jTextFieldIDAddFlight.getText());
         String flightId = jComboBoxFlight.getItemAt(jComboBoxFlight.getSelectedIndex());
-
-        Passenger passenger = null;
-        Flight flight = null;
-
-        for (Passenger p : this.passengers) {
-            if (p.getId() == passengerId) {
-                passenger = p;
-            }
+      
+        Response response = FlightController.addPassengerToFlight(flightId, passengerId);
+        
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            jTextFieldIDAddFlight.setText("");
+            jComboBoxFlight.setSelectedItem("Flight");
         }
 
-        for (Flight f : this.flights) {
-            if (flightId.equals(f.getId())) {
-                flight = f;
-            }
-        }
-
-        passenger.addFlight(flight);
-        flight.addPassenger(passenger);
+//        for (Passenger p : this.passengers) {
+//            if (p.getId() == passengerId) {
+//                passenger = p;
+//            }
+//        }
+//
+//        for (Flight f : this.flights) {
+//            if (flightId.equals(f.getId())) {
+//                flight = f;
+//            }
+//        }
+//
+//        passenger.addFlight(flight);
+//        flight.addPassenger(passenger);
     }//GEN-LAST:event_jButtonAddFlightActionPerformed
 
     private void jButtonDelayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDelayActionPerformed
@@ -1875,10 +1902,10 @@ public class AirportFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldAirportLatitude;
     private javax.swing.JTextField jTextFieldAirportLongitude;
     private javax.swing.JTextField jTextFieldAirportName;
-    private javax.swing.JTextField jTextFieldBirthdate;
     private javax.swing.JTextField jTextFieldBrandAirPlaneRegister;
     private javax.swing.JTextField jTextFieldCountry;
     private javax.swing.JTextField jTextFieldCountryUserRegister;
+    private javax.swing.JTextField jTextFieldDate;
     private javax.swing.JTextField jTextFieldDepartureYear;
     private javax.swing.JTextField jTextFieldFirstName;
     private javax.swing.JTextField jTextFieldFirstNameUserRegister;
