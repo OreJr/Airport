@@ -86,11 +86,21 @@ public class FlightController {
             }
 
             LocalDateTime departureDateTime;
+            int intYear,intMonth,intDay,intHour,intMinute;
             try {
-                departureDateTime = LocalDateTime.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day),
-                        Integer.parseInt(hour), Integer.parseInt(minute));
-            } catch (DateTimeException e) {
-                return new Response("Invalid departure date/time.", Status.BAD_REQUEST);
+                intYear = Integer.parseInt(year);
+                intMonth = Integer.parseInt(month);
+                intDay = Integer.parseInt(day);
+                intHour = Integer.parseInt(hour);
+                intMinute = Integer.parseInt(minute);
+                try {
+                    departureDateTime = LocalDateTime.of(intYear, intMonth, intDay,
+                            intHour, intMinute);
+                } catch (DateTimeException e) {
+                    return new Response("Invalid departure date/time.", Status.BAD_REQUEST);
+                }
+            } catch (NumberFormatException ex) {
+                return new Response("arrival duration must be numeric", Status.BAD_REQUEST);
             }
 
             try {
