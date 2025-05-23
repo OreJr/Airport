@@ -10,14 +10,13 @@ import core.models.Flight;
 import core.models.Location;
 import core.models.Passenger;
 import core.models.Plane;
-import core.models.storage.StorageFlight;       
-import core.models.storage.StorageLocation;   
-import core.models.storage.StoragePassenger;  
-import core.models.storage.StoragePlane;      
+import core.models.storage.StorageFlight;
+import core.models.storage.StorageLocation;
+import core.models.storage.StoragePassenger;
+import core.models.storage.StoragePlane;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.List;
-
 
 /**
  *
@@ -25,24 +24,24 @@ import java.util.List;
  */
 public class FlightController {
 
-
-
     /**
-     * Valida el formato del ID de un vuelo (XXX000: 3 letras mayúsculas seguidas de 3 dígitos).
+     * Valida el formato del ID de un vuelo (XXX000: 3 letras mayúsculas
+     * seguidas de 3 dígitos).
+     *
      * @param id El ID a validar.
      * @return true si el formato es válido, false en caso contrario.
      */
     private static boolean isValidFlightIdFormat(String id) {
         if (id == null || id.length() != 6) {
-            return false; 
+            return false;
         }
-        for (int i = 0; i < 3; i++) { 
+        for (int i = 0; i < 3; i++) {
             char c = id.charAt(i);
             if (!Character.isUpperCase(c)) {
                 return false;
             }
         }
-        for (int i = 3; i < 6; i++) { 
+        for (int i = 3; i < 6; i++) {
             char c = id.charAt(i);
             if (!Character.isDigit(c)) {
                 return false;
@@ -51,12 +50,13 @@ public class FlightController {
         return true;
     }
 
-    public static Response createFlight(String id, String planeId, 
-                                        String departureLocationId, String arrivalLocationId, String scaleLocationId,
-                                        int year, int month, int day, int hour, int minute,
-                                        int hoursDurationArrival, int minutesDurationArrival,
-                                        int hoursDurationScale, int minutesDurationScale) {
+    public static Response createFlight(String id, String planeId,
+            String departureLocationId, String arrivalLocationId, String scaleLocationId,
+            String year, String month, String day, String hour, String minute,
+            String hoursDurationArrival, String minutesDurationArrival,
+            String hoursDurationScale, String minutesDurationScale) {
         try {
+            int intHoursDurationArrival, intMinutesDurationArrival, intHoursDurationScale, intMinutesDurationScale;
             if (!isValidFlightIdFormat(id)) {
                 return new Response("Flight ID must follow format XXXYYY (e.g., ABC123).", Status.BAD_REQUEST);
             }
@@ -76,7 +76,7 @@ public class FlightController {
             if (originalArrivalLocation == null) {
                 return new Response("Arrival location " + arrivalLocationId + " not found.", Status.BAD_REQUEST);
             }
-            
+
             Location originalScaleLocation = null;
             if (scaleLocationId != null && !scaleLocationId.trim().isEmpty()) {
                 originalScaleLocation = locationStorage.getOriginalLocation(scaleLocationId);
@@ -87,40 +87,55 @@ public class FlightController {
 
             LocalDateTime departureDateTime;
             try {
-                departureDateTime = LocalDateTime.of(year, month, day, hour, minute);
+                departureDateTime = LocalDateTime.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day),
+                        Integer.parseInt(hour), Integer.parseInt(minute));
             } catch (DateTimeException e) {
                 return new Response("Invalid departure date/time.", Status.BAD_REQUEST);
             }
 
-            if (hoursDurationArrival < 0 || minutesDurationArrival < 0 || (hoursDurationArrival == 0 && minutesDurationArrival == 0)) {
-                return new Response("Arrival duration must be > 00:00.", Status.BAD_REQUEST);
-            }
-            if (minutesDurationArrival >= 60) {
-                return new Response("Arrival duration minutes must be < 60.", Status.BAD_REQUEST);
+            try {
+                intHoursDurationArrival = Integer.parseInt(hoursDurationArrival);
+                intMinutesDurationArrival = Integer.parseInt(minutesDurationArrival);
+                if (intHoursDurationArrival < 0 || intMinutesDurationArrival < 0 || (intHoursDurationArrival == 0 && intMinutesDurationArrival == 0)) {
+                    return new Response("Arrival duration must be > 00:00.", Status.BAD_REQUEST);
+                }
+
+                if (intMinutesDurationArrival >= 60) {
+                    return new Response("Arrival duration minutes must be < 60.", Status.BAD_REQUEST);
+                }
+
+            } catch (NumberFormatException ex) {
+                return new Response("arrival duration must be numeric", Status.BAD_REQUEST);
             }
 
-            if (originalScaleLocation != null) {
-                if (hoursDurationScale < 0 || minutesDurationScale < 0 || (hoursDurationScale == 0 && minutesDurationScale == 0)) {
-                    return new Response("Scale duration must be > 00:00 if scale location provided.", Status.BAD_REQUEST);
+            try {
+                intHoursDurationScale = Integer.parseInt(hoursDurationScale);
+                intMinutesDurationScale = Integer.parseInt(minutesDurationScale);
+                if (originalScaleLocation != null) {
+                    if (intHoursDurationScale < 0 || intMinutesDurationScale < 0 || (intHoursDurationScale == 0 && intMinutesDurationScale == 0)) {
+                        return new Response("Scale duration must be > 00:00 if scale location provided.", Status.BAD_REQUEST);
+                    }
+                    if (intMinutesDurationScale >= 60) {
+                        return new Response("Scale duration minutes must be < 60.", Status.BAD_REQUEST);
+                    }
+                } else {
+                    if (intHoursDurationScale != 0 || intMinutesDurationScale != 0) {
+                        return new Response("Scale duration must be 00:00 if no scale location.", Status.BAD_REQUEST);
+                    }
                 }
-                if (minutesDurationScale >= 60) {
-                    return new Response("Scale duration minutes must be < 60.", Status.BAD_REQUEST);
-                }
-            } else { 
-                if (hoursDurationScale != 0 || minutesDurationScale != 0) {
-                    return new Response("Scale duration must be 00:00 if no scale location.", Status.BAD_REQUEST);
-                }
+            } catch (NumberFormatException ex) {
+                return new Response("Scale duration must be numeric", Status.BAD_REQUEST);
             }
-            
+
             StorageFlight flightStorage = StorageFlight.getInstance();
             Flight newFlight;
             if (originalScaleLocation != null) {
                 newFlight = new Flight(id, originalPlane, originalDepartureLocation, originalScaleLocation, originalArrivalLocation,
-                                       departureDateTime, hoursDurationArrival, minutesDurationArrival,
-                                       hoursDurationScale, minutesDurationScale);
+                        departureDateTime, intHoursDurationArrival, intMinutesDurationArrival,
+                        intHoursDurationScale, intMinutesDurationScale);
             } else {
                 newFlight = new Flight(id, originalPlane, originalDepartureLocation, originalArrivalLocation,
-                                       departureDateTime, hoursDurationArrival, minutesDurationArrival);
+                        departureDateTime, intHoursDurationArrival, intMinutesDurationArrival);
             }
 
             if (!flightStorage.addFlight(newFlight)) {
@@ -132,19 +147,27 @@ public class FlightController {
         }
     }
 
-    public static Response addPassengerToFlight(String flightId, long passengerId) {
+    public static Response addPassengerToFlight(String flightId, String passengerId) {
         try {
             StorageFlight flightStorage = StorageFlight.getInstance();
-            Flight originalFlight = flightStorage.getOriginalFlight(flightId); 
+            Flight originalFlight = flightStorage.getOriginalFlight(flightId);
             if (originalFlight == null) {
                 if (!isValidFlightIdFormat(flightId)) { // Chequeo de formato adicional
-                     return new Response("Invalid Flight ID format.", Status.BAD_REQUEST);
+                    return new Response("Invalid Flight ID format.", Status.BAD_REQUEST);
                 }
                 return new Response("Flight not found.", Status.NOT_FOUND);
             }
 
             StoragePassenger passengerStorage = StoragePassenger.getInstance();
-            Passenger originalPassenger = passengerStorage.getOriginalPassenger(passengerId); 
+            Passenger originalPassenger;
+            long longPassengerId;
+            try {
+                longPassengerId = Long.parseLong(passengerId);
+                originalPassenger = passengerStorage.getOriginalPassenger(longPassengerId);
+            } catch (NumberFormatException ex) {
+                return new Response("Passenger Id must be numeric", Status.BAD_REQUEST);
+            }
+
             if (originalPassenger == null) {
                 return new Response("Passenger not found.", Status.NOT_FOUND);
             }
@@ -152,15 +175,15 @@ public class FlightController {
             if (originalFlight.getNumPassengers() >= originalFlight.getPlane().getMaxCapacity()) {
                 return new Response("Flight is at maximum capacity.", Status.BAD_REQUEST);
             }
-            
-            for(Passenger p : originalFlight.getPassengers()){ 
-                if(p.getId() == passengerId) {
+
+            for (Passenger p : originalFlight.getPassengers()) {
+                if (p.getId() == longPassengerId) {
                     return new Response("Passenger already on this flight.", Status.BAD_REQUEST);
                 }
             }
 
-            originalFlight.addPassenger(new Passenger(originalPassenger)); 
-            originalPassenger.addFlight(originalFlight); 
+            originalFlight.addPassenger(new Passenger(originalPassenger));
+            originalPassenger.addFlight(originalFlight);
 
             return new Response("Passenger added to flight successfully.", Status.OK, new Flight(originalFlight));
         } catch (Exception ex) {
@@ -168,38 +191,44 @@ public class FlightController {
         }
     }
 
-    public static Response delayFlight(String flightId, int hours, int minutes) {
+    public static Response delayFlight(String flightId, String hours, String minutes) {
         try {
-            if (hours < 0 || minutes < 0 || (hours == 0 && minutes == 0)) {
-                return new Response("Delay time must be > 00:00.", Status.BAD_REQUEST);
-            }
-            if (minutes >= 60) {
-                return new Response("Delay minutes must be < 60.", Status.BAD_REQUEST);
+            int intHours, intMinutes;
+            try {
+                intHours = Integer.parseInt(hours);
+                intMinutes = Integer.parseInt(minutes);
+                if (intHours < 0 || intMinutes < 0 || (intHours == 0 && intMinutes == 0)) {
+                    return new Response("Delay time must be > 00:00.", Status.BAD_REQUEST);
+                }
+                if (intMinutes >= 60) {
+                    return new Response("Delay minutes must be < 60.", Status.BAD_REQUEST);
+                }
+            } catch (NumberFormatException ex) {
+                return new Response("Scale duration must be numeric", Status.BAD_REQUEST);
             }
 
             StorageFlight flightStorage = StorageFlight.getInstance();
-            Flight originalFlight = flightStorage.getOriginalFlight(flightId); 
-             if (originalFlight == null) {
-                if (!isValidFlightIdFormat(flightId)) { 
-                     return new Response("Invalid Flight ID format for delay.", Status.BAD_REQUEST);
+            Flight originalFlight = flightStorage.getOriginalFlight(flightId);
+            if (originalFlight == null) {
+                if (!isValidFlightIdFormat(flightId)) {
+                    return new Response("Invalid Flight ID format for delay.", Status.BAD_REQUEST);
                 }
                 return new Response("Flight not found.", Status.NOT_FOUND);
             }
 
-            originalFlight.delay(hours, minutes);
+            originalFlight.delay(intHours, intMinutes);
             return new Response("Flight delayed successfully.", Status.OK, new Flight(originalFlight));
         } catch (Exception ex) {
             return new Response("Unexpected error delaying flight: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
     }
 
-
     public static Response getFlightById(String flightId) {
-         if (!isValidFlightIdFormat(flightId)) { 
+        if (!isValidFlightIdFormat(flightId)) {
             return new Response("Flight ID must follow format XXXYYY.", Status.BAD_REQUEST);
-         }
+        }
         StorageFlight storage = StorageFlight.getInstance();
-        Flight flightCopy = storage.getFlightCopy(flightId); 
+        Flight flightCopy = storage.getFlightCopy(flightId);
         if (flightCopy == null) {
             return new Response("Flight not found.", Status.NOT_FOUND);
         }
@@ -209,7 +238,7 @@ public class FlightController {
     public static Response getAllFlights() {
         try {
             StorageFlight storage = StorageFlight.getInstance();
-            List<Flight> flights = storage.getAllFlights(); 
+            List<Flight> flights = storage.getAllFlights();
             return new Response("Flights retrieved successfully.", Status.OK, flights);
         } catch (Exception ex) {
             return new Response("Unexpected error retrieving flights: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
