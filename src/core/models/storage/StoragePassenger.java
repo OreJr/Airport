@@ -1,60 +1,95 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package core.models.storage;
 
 import core.models.Passenger;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
- *
- * @author OreJr
+ * Manages in-memory storage for Passenger objects using an ArrayList.
  */
 public class StoragePassenger {
-    // Instancia Singleton
     private static StoragePassenger instance;
-    
-    // Atributos del Storage
-    private ArrayList<Passenger> passengers;
-    
+    private List<Passenger> passengersList;
+
     private StoragePassenger() {
-        this.passengers = new ArrayList<>();
+        passengersList = new ArrayList<>();
     }
-    
-    public static StoragePassenger getInstance() {
+
+    public static synchronized StoragePassenger getInstance() {
         if (instance == null) {
             instance = new StoragePassenger();
         }
         return instance;
     }
-    
-    public boolean addPassenger(Passenger passenger) {
-        for (Passenger p : this.passengers) {
-            if (p.getId() == passenger.getId()) {
-                return false;
+
+    /**
+     * Checks if a passenger with the given ID already exists.
+     * @param id The ID to check.
+     * @return True if a passenger with the ID exists, false otherwise.
+     */
+    public boolean passengerExists(long id) {
+        for (Passenger p : passengersList) {
+            if (p.getId() == id) {
+                return true;
             }
         }
-        this.passengers.add(passenger);
+        return false;
+    }
+
+    /**
+     * Adds a new passenger to the storage if the ID is unique.
+     * @param passenger The passenger to add.
+     * @return True if the passenger was added successfully, false if a passenger with the same ID already exists.
+     */
+    public boolean addPassenger(Passenger passenger) {
+        if (passengerExists(passenger.getId())) {
+            return false; 
+        }
+        passengersList.add(passenger);
         return true;
     }
-    
+
+    /**
+     * Retrieves a copy of the passenger with the specified ID.
+     * @param id The ID of the passenger to retrieve.
+     * @return A copy of the Passenger object if found, or null otherwise.
+     */
     public Passenger getPassenger(long id) {
-        for (Passenger passenger : this.passengers) {
-            if (passenger.getId() == id) {
-                return passenger;
+        for (Passenger p : passengersList) {
+            if (p.getId() == id) {
+                return new Passenger(p); 
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Retrieves the original passenger object with the specified ID.
+     * Used internally by controllers for updates or direct associations.
+     * @param id The ID of the passenger to retrieve.
+     * @return The original Passenger object if found, or null otherwise.
+     */
+    public Passenger getOriginalPassenger(long id) {
+        for (Passenger p : passengersList) {
+            if (p.getId() == id) {
+                return p; 
             }
         }
         return null;
     }
 
-    public Passenger getOriginalPassenger(long passengerId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    /**
+     * Retrieves a list of copies of all passengers, sorted by ID.
+     * @return A new list containing copies of all stored passengers.
+     */
     public List<Passenger> getAllPassengers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Passenger> copiedList = new ArrayList<>();
+        for (Passenger p : passengersList) {
+            copiedList.add(new Passenger(p)); 
+        }
+        Collections.sort(copiedList, Comparator.comparingLong(Passenger::getId));
+        return copiedList;
     }
-    
 }
