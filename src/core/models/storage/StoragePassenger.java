@@ -92,4 +92,13 @@ public class StoragePassenger {
         Collections.sort(copiedList, Comparator.comparingLong(Passenger::getId));
         return copiedList;
     }
+    
+    public List<String> getAllIdPassengers(){
+      List<Passenger> passengers = getAllPassengers();
+      List<String> ids = new ArrayList<>();
+      for (Passenger passenger: passengers){
+          ids.add(String.valueOf(passenger.getId()));
+      }
+      return ids;
+    }
 }

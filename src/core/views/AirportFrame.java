@@ -43,7 +43,8 @@ public class AirportFrame extends javax.swing.JFrame {
 //        this.flights = new ArrayList<>();
         this.setBackground(new Color(0, 0, 0, 0));
         this.setLocationRelativeTo(null);
-
+        // se cargan los ids del json
+        
         this.generateMonths();
         this.generateDays();
         this.generateHours();
@@ -51,6 +52,15 @@ public class AirportFrame extends javax.swing.JFrame {
         this.blockPanels();
         
         DataLoader.loadInitialData();
+        PassengerControler.ControllerChargeIds(this);
+    }
+    
+    public void chargeIds(List<String> ids) {
+        System.out.println("ids a cargar:");
+        for (String id : ids) {
+            JComboBoxUserSelect.addItem(id);
+            System.out.println(id);
+        }
     }
 
     private void blockPanels() {
@@ -1848,7 +1858,7 @@ public class AirportFrame extends javax.swing.JFrame {
     private void JComboBoxUserSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JComboBoxUserSelectActionPerformed
         try {
             String id = JComboBoxUserSelect.getSelectedItem().toString();
-            if (!id.equals(JComboBoxUserSelect.getItemAt(0))) {
+            if (!id.equals(JComboBoxUserSelect.getItemAt(0  ))) {
                 jTextFieldIDUser.setText(id);
                 jTextFieldIDAddFlight.setText(id);
             } else {

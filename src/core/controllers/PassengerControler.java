@@ -9,6 +9,7 @@ import core.controllers.utils.Status;
 import core.models.Flight;
 import core.models.Passenger;
 import core.models.storage.StoragePassenger;
+import core.views.AirportFrame;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Period; // Importado para calcular la edad
@@ -229,6 +230,12 @@ public class PassengerControler {
         } catch (Exception ex) {
             return new Response("Error inesperado al recuperar pasajeros: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
+    }
+    
+    public static void ControllerChargeIds(AirportFrame vista){
+            StoragePassenger storage = StoragePassenger.getInstance();
+            List<String > ids = storage.getAllIdPassengers();
+            vista.chargeIds(ids);
     }
     
     public static Response getPassengerFlights(String passengerIdParam) { 
