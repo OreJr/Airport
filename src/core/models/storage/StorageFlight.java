@@ -98,4 +98,13 @@ public class StorageFlight {
         Collections.sort(copiedList, Comparator.comparing(Flight::getDepartureDate));
         return copiedList;
     }
+
+    public List<String> getAllIdFlights() {
+        List<Flight> flights = getAllFlights();
+      List<String> ids = new ArrayList<>();
+      for (Flight flight: flights){
+          ids.add(flight.getId());
+      }
+      return ids;
+    }
 }

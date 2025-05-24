@@ -53,9 +53,36 @@ public class AirportFrame extends javax.swing.JFrame {
         
         DataLoader.loadInitialData();
         PassengerControler.ControllerChargeIds(this);
+        FlightController.ControllerChargeIds(this);
+//        PlaneController.ControllerChargeIds(this);
+//        LocationController.ControllerChargeIds(this);
     }
     
-    public void chargeIds(List<String> ids) {
+    public void chargePassengerIds(List<String> ids) {
+        System.out.println("ids a cargar:");
+        for (String id : ids) {
+            JComboBoxUserSelect.addItem(id);
+            System.out.println(id);
+        }
+    }
+    
+    public void chargePlaneIds(List<String> ids) {
+        System.out.println("ids a cargar:");
+        for (String id : ids) {
+            JComboBoxUserSelect.addItem(id);
+            System.out.println(id);
+        }
+    }
+    
+    public void chargeFlightIds(List<String> ids) {
+        System.out.println("ids a cargar:");
+        for (String id : ids) {
+            this.jComboBoxFlight.addItem(id);
+            System.out.println(id);
+        }
+    }
+    
+    public void chargeLocationIds(List<String> ids) {
         System.out.println("ids a cargar:");
         for (String id : ids) {
             JComboBoxUserSelect.addItem(id);

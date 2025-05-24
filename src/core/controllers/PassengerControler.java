@@ -235,7 +235,7 @@ public class PassengerControler {
     public static void ControllerChargeIds(AirportFrame vista){
             StoragePassenger storage = StoragePassenger.getInstance();
             List<String > ids = storage.getAllIdPassengers();
-            vista.chargeIds(ids);
+            vista.chargePassengerIds(ids);
     }
     
     public static Response getPassengerFlights(String passengerIdParam) { 
