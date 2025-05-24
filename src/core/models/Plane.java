@@ -5,7 +5,6 @@
 package core.models;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List; 
 
 /**
@@ -30,7 +29,7 @@ public class Plane {
         this.flights = new ArrayList<>();
     }
 
-    // Constructor de copia (necesario para el patrón Prototype)
+    // Constructor de copia principal
     public Plane(Plane originalInstance) {
         this.id = originalInstance.id;
         this.brand = originalInstance.brand;
@@ -39,8 +38,33 @@ public class Plane {
         this.airline = originalInstance.airline;
         this.flights = new ArrayList<>();
         if (originalInstance.flights != null) {
-            for(Flight f : originalInstance.flights) {
-                this.flights.add(new Flight(f)); 
+            for(Flight f_original : originalInstance.flights) {
+                // Al copiar un vuelo como parte de un avión, le pasamos este avión (copia)
+                this.flights.add(new Flight(f_original, this)); 
+            }
+        }
+    }
+    
+    /**
+     * Constructor de copia contextual, usado principalmente por Flight al copiar su avión.
+     * El flag shallowCopyOfItsFlights evita que este constructor intente a su vez copiar profundamente
+     * la lista de vuelos del avión, rompiendo el ciclo recursivo.
+     */
+    protected Plane(Plane originalInstance, boolean shallowCopyOfItsFlights) {
+        this.id = originalInstance.id;
+        this.brand = originalInstance.brand;
+        this.model = originalInstance.model;
+        this.maxCapacity = originalInstance.maxCapacity;
+        this.airline = originalInstance.airline;
+        if (shallowCopyOfItsFlights) {
+            this.flights = new ArrayList<>(); // En una copia superficial para Vuelo, no copiamos la lista de vuelos del avión.
+        } else {
+            // Comportamiento de copia profunda normal
+            this.flights = new ArrayList<>();
+            if (originalInstance.flights != null) {
+                for(Flight f_original : originalInstance.flights) {
+                    this.flights.add(new Flight(f_original, this));
+                }
             }
         }
     }
@@ -58,36 +82,11 @@ public class Plane {
         }
     }
     
-    public String getId() {
-        return id;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public int getMaxCapacity() {
-        return maxCapacity;
-    }
-
-    public String getAirline() {
-        return airline;
-    }
-
-    /**
-     * Devuelve una copia de la lista de vuelos asociados a este avión.
-     * Esto previene modificaciones externas directas a la lista interna.
-     * @return Una nueva lista conteniendo los vuelos del avión.
-     */
-    public List<Flight> getFlights() { 
-        return new ArrayList<>(this.flights); // Devuelve una copia de la lista
-    }
-    
-    public int getNumFlights() {
-        return flights.size();
-    }
+    public String getId() { return id; }
+    public String getBrand() { return brand; }
+    public String getModel() { return model; }
+    public int getMaxCapacity() { return maxCapacity; }
+    public String getAirline() { return airline; }
+    public List<Flight> getFlights() { return new ArrayList<>(this.flights); } // Devuelve copia de la lista
+    public int getNumFlights() { return flights.size(); }
 }

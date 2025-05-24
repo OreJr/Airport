@@ -4,6 +4,7 @@
  */
 package core.views;
 
+import util.DataLoader;
 import core.controllers.FlightController;
 import core.controllers.LocationController;
 import core.controllers.PassengerControler;
@@ -48,6 +49,8 @@ public class AirportFrame extends javax.swing.JFrame {
         this.generateHours();
         this.generateMinutes();
         this.blockPanels();
+        
+        DataLoader.loadInitialData();
     }
 
     private void blockPanels() {

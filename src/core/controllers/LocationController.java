@@ -18,12 +18,6 @@ import java.util.List;
  */
 public class LocationController {
 
-    /**
-     * Valida el formato del ID de un aeropuerto (XXX: 3 letras mayúsculas).
-     *
-     * @param airportId El ID a validar.
-     * @return true si el formato es válido, false en caso contrario.
-     */
     private static boolean isValidAirportIdFormat(String airportId) {
         if (airportId == null || airportId.length() != 3) {
             return false;
@@ -62,77 +56,77 @@ public class LocationController {
     public static Response createLocation(String airportId, String airportName, String airportCity, String airportCountry, String airportLatitude, String airportLongitude) {
         try {
             if (!isValidAirportIdFormat(airportId)) {
-                return new Response("Airport ID must be 3 uppercase letters.", Status.BAD_REQUEST);
+                return new Response("El ID del aeropuerto debe ser 3 letras mayúsculas.", Status.BAD_REQUEST);
             }
             if (airportName == null || airportName.trim().isEmpty()) {
-                return new Response("Airport name must not be empty.", Status.BAD_REQUEST);
+                return new Response("El nombre del aeropuerto no debe estar vacío.", Status.BAD_REQUEST);
             }
             if (airportCity == null || airportCity.trim().isEmpty()) {
-                return new Response("Airport city must not be empty.", Status.BAD_REQUEST);
+                return new Response("La ciudad del aeropuerto no debe estar vacía.", Status.BAD_REQUEST);
             }
             if (airportCountry == null || airportCountry.trim().isEmpty()) {
-                return new Response("Airport country must not be empty.", Status.BAD_REQUEST);
+                return new Response("El país del aeropuerto no debe estar vacío.", Status.BAD_REQUEST);
             }
             double doubleAirportLatitude;
             double roundedLatitude;
             try {
                 doubleAirportLatitude = Double.parseDouble(airportLatitude);
                 if (!isValidLatitude(doubleAirportLatitude)) {
-                    return new Response("Latitude must be between -90 and 90.", Status.BAD_REQUEST);
+                    return new Response("La latitud debe estar entre -90 y 90.", Status.BAD_REQUEST);
                 }
                 if (countDecimalPlaces(doubleAirportLatitude) > 4) {
-                    return new Response("Latitude must have at most 4 decimal places.", Status.BAD_REQUEST);
+                    return new Response("La latitud debe tener como máximo 4 decimales.", Status.BAD_REQUEST);
                 }
                 roundedLatitude = roundToFourDecimals(doubleAirportLatitude);
             } catch (NumberFormatException ex) {
-                return new Response("Latitude must be numeric", Status.BAD_REQUEST);
+                return new Response("La latitud debe ser numérica.", Status.BAD_REQUEST);
             }
             double doubleAirportLongitude;
             double roundedLongitude;
             try {
                 doubleAirportLongitude = Double.parseDouble(airportLongitude);
                 if (!isValidLongitude(doubleAirportLongitude)) {
-                    return new Response("Longitude must be between -180 and 180.", Status.BAD_REQUEST);
+                    return new Response("La longitud debe estar entre -180 y 180.", Status.BAD_REQUEST);
                 }
                 if (countDecimalPlaces(doubleAirportLongitude) > 4) {
-                    return new Response("Longitude must have at most 4 decimal places.", Status.BAD_REQUEST);
+                    return new Response("La longitud debe tener como máximo 4 decimales.", Status.BAD_REQUEST);
                 }
                 roundedLongitude = roundToFourDecimals(doubleAirportLongitude);
             } catch (NumberFormatException ex) {
-                return new Response("Longitude must be numeric", Status.BAD_REQUEST);
+                return new Response("La longitud debe ser numérica.", Status.BAD_REQUEST);
             }
 
             StorageLocation storage = StorageLocation.getInstance();
             Location newLocation = new Location(airportId, airportName.trim(), airportCity.trim(), airportCountry.trim(), roundedLatitude, roundedLongitude);
 
             if (!storage.addLocation(newLocation)) {
-                return new Response("An airport with that ID already exists.", Status.BAD_REQUEST);
+                return new Response("Un aeropuerto con ese ID ya existe.", Status.BAD_REQUEST);
             }
-            return new Response("Airport (Location) created successfully.", Status.CREATED, new Location(newLocation));
+            return new Response("Aeropuerto (Ubicación) creado exitosamente.", Status.CREATED, new Location(newLocation));
         } catch (Exception ex) {
-            return new Response("Unexpected error creating location: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
+            return new Response("Error inesperado al crear la ubicación: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
     }
 
     public static Response getLocationById(String airportId) {
         if (!isValidAirportIdFormat(airportId)) {
-            return new Response("Airport ID must be 3 uppercase letters.", Status.BAD_REQUEST);
+            return new Response("El ID del aeropuerto debe ser 3 letras mayúsculas.", Status.BAD_REQUEST);
         }
         StorageLocation storage = StorageLocation.getInstance();
         Location location = storage.getLocation(airportId);
         if (location == null) {
-            return new Response("Airport (Location) not found.", Status.NOT_FOUND);
+            return new Response("Aeropuerto (Ubicación) no encontrado.", Status.NOT_FOUND);
         }
-        return new Response("Airport (Location) retrieved successfully.", Status.OK, location);
+        return new Response("Aeropuerto (Ubicación) recuperado exitosamente.", Status.OK, location);
     }
 
     public static Response getAllLocations() {
         try {
             StorageLocation storage = StorageLocation.getInstance();
             List<Location> locations = storage.getAllLocations();
-            return new Response("Airports (Locations) retrieved successfully.", Status.OK, locations);
+            return new Response("Aeropuertos (Ubicaciones) recuperados exitosamente.", Status.OK, locations);
         } catch (Exception ex) {
-            return new Response("Unexpected error retrieving locations: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
+            return new Response("Error inesperado al recuperar ubicaciones: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
     }
 }

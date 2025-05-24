@@ -11,15 +11,17 @@ import core.models.Passenger;
 import core.models.storage.StoragePassenger;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.Period; // Importado para calcular la edad
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 /**
  *
- * @author JorgeDuarte and OreJr
+ * @author JorgeDuarte and OreJr 
  */
-public class PassengerControler {
+public class PassengerControler { 
 
     public static Response createPassenger(String id, String firstname, String lastname, String year, String month, String day, String phoneCode, String phone, String country) {
         try {
@@ -27,13 +29,13 @@ public class PassengerControler {
             try {
                 longId = Long.parseLong(id);
                 if (longId < 0) {
-                    return new Response("Passenger ID must be non-negative.", Status.BAD_REQUEST);
+                    return new Response("El ID del pasajero debe ser no negativo.", Status.BAD_REQUEST);
                 }
                 if (String.valueOf(longId).length() > 15) {
-                    return new Response("Passenger ID must have at most 15 digits.", Status.BAD_REQUEST);
+                    return new Response("El ID del pasajero debe tener como máximo 15 dígitos.", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("Passenger ID must be numeric", Status.BAD_REQUEST);
+                return new Response("El ID del pasajero debe ser numérico.", Status.BAD_REQUEST);
             }
 
             LocalDate birthDate;
@@ -45,20 +47,33 @@ public class PassengerControler {
                 try {
                     birthDate = LocalDate.of(intYear, intMonth, intDay);
                 } catch (DateTimeException e) {
-                    return new Response("Invalid birth date.", Status.BAD_REQUEST);
+                    return new Response("Fecha de nacimiento inválida.", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("birthdate must be numeric", Status.BAD_REQUEST);
+                return new Response("Los componentes de la fecha de nacimiento deben ser numéricos.", Status.BAD_REQUEST);
+            }
+
+            LocalDate today = LocalDate.now(); 
+            if (birthDate.isEqual(today)) {
+                return new Response("La fecha de nacimiento no puede ser la fecha actual.", Status.BAD_REQUEST);
+            }
+            if (birthDate.isAfter(today)) { 
+                return new Response("La fecha de nacimiento no puede ser una fecha futura.", Status.BAD_REQUEST);
+            }
+
+            Period age = Period.between(birthDate, today);
+            if (age.getYears() >= 130) { // CAMBIO: Límite de edad a 130
+                return new Response("El pasajero no puede tener 130 años o más.", Status.BAD_REQUEST);
             }
 
             if (firstname == null || firstname.trim().isEmpty()) {
-                return new Response("Firstname must not be empty.", Status.BAD_REQUEST);
+                return new Response("El nombre no debe estar vacío.", Status.BAD_REQUEST);
             }
             if (lastname == null || lastname.trim().isEmpty()) {
-                return new Response("Lastname must not be empty.", Status.BAD_REQUEST);
+                return new Response("El apellido no debe estar vacío.", Status.BAD_REQUEST);
             }
             if (country == null || country.trim().isEmpty()) {
-                return new Response("Country must not be empty.", Status.BAD_REQUEST);
+                return new Response("El país no debe estar vacío.", Status.BAD_REQUEST);
             }
 
             int intPhoneCode;
@@ -66,30 +81,30 @@ public class PassengerControler {
             try {
                 intPhoneCode = Integer.parseInt(phoneCode);
                 if (intPhoneCode < 0 || String.valueOf(intPhoneCode).length() > 3) {
-                    return new Response("Invalid phone code (must be non-negative, max 3 digits).", Status.BAD_REQUEST);
+                    return new Response("Código telefónico inválido (debe ser no negativo, máx 3 dígitos).", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("phone code must be numeric", Status.BAD_REQUEST);
+                return new Response("El código telefónico debe ser numérico.", Status.BAD_REQUEST);
             }
 
             try {
                 longPhone = Long.parseLong(phone);
                 if (longPhone < 0 || String.valueOf(longPhone).length() > 11) {
-                    return new Response("Invalid phone number (must be non-negative, max 11 digits).", Status.BAD_REQUEST);
+                    return new Response("Número de teléfono inválido (debe ser no negativo, máx 11 dígitos).", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("phone must be numeric", Status.BAD_REQUEST);
+                return new Response("El teléfono debe ser numérico.", Status.BAD_REQUEST);
             }
 
             StoragePassenger storage = StoragePassenger.getInstance();
             Passenger newPassenger = new Passenger(longId, firstname.trim(), lastname.trim(), birthDate, intPhoneCode, longPhone, country.trim());
 
             if (!storage.addPassenger(newPassenger)) {
-                return new Response("A passenger with that ID already exists.", Status.BAD_REQUEST);
+                return new Response("Un pasajero con ese ID ya existe.", Status.BAD_REQUEST);
             }
-            return new Response("Passenger created successfully.", Status.CREATED, new Passenger(newPassenger));
+            return new Response("Pasajero creado exitosamente.", Status.CREATED, new Passenger(newPassenger));
         } catch (Exception ex) {
-            return new Response("Unexpected error during passenger creation: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
+            return new Response("Error inesperado durante la creación del pasajero: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -97,15 +112,12 @@ public class PassengerControler {
         try {
             long longId;
             try {
-                longId = Long.parseLong(id);
-                if (longId < 0) {
-                    return new Response("Passenger ID must be non-negative.", Status.BAD_REQUEST);
-                }
-                if (String.valueOf(longId).length() > 15) {
-                    return new Response("Passenger ID must have at most 15 digits.", Status.BAD_REQUEST);
+                longId = Long.parseLong(id); 
+                if (longId < 0) { 
+                    return new Response("El ID del pasajero debe ser no negativo.", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("Passenger ID must be numeric", Status.BAD_REQUEST);
+                return new Response("El ID del pasajero debe ser numérico.", Status.BAD_REQUEST);
             }
 
             LocalDate birthDate;
@@ -117,20 +129,33 @@ public class PassengerControler {
                 try {
                     birthDate = LocalDate.of(intYear, intMonth, intDay);
                 } catch (DateTimeException e) {
-                    return new Response("Invalid birth date.", Status.BAD_REQUEST);
+                    return new Response("Fecha de nacimiento inválida.", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("birthdate must be numeric", Status.BAD_REQUEST);
+                return new Response("Los componentes de la fecha de nacimiento deben ser numéricos.", Status.BAD_REQUEST);
+            }
+
+            LocalDate today = LocalDate.now(); 
+            if (birthDate.isEqual(today)) {
+                return new Response("La fecha de nacimiento no puede ser la fecha actual.", Status.BAD_REQUEST);
+            }
+            if (birthDate.isAfter(today)) { 
+                return new Response("La fecha de nacimiento no puede ser una fecha futura.", Status.BAD_REQUEST);
+            }
+
+            Period age = Period.between(birthDate, today);
+            if (age.getYears() >= 130) { // CAMBIO: Límite de edad a 130
+                return new Response("El pasajero no puede tener 130 años o más.", Status.BAD_REQUEST);
             }
 
             if (firstname == null || firstname.trim().isEmpty()) {
-                return new Response("Firstname must not be empty.", Status.BAD_REQUEST);
+                return new Response("El nombre no debe estar vacío.", Status.BAD_REQUEST);
             }
             if (lastname == null || lastname.trim().isEmpty()) {
-                return new Response("Lastname must not be empty.", Status.BAD_REQUEST);
+                return new Response("El apellido no debe estar vacío.", Status.BAD_REQUEST);
             }
             if (country == null || country.trim().isEmpty()) {
-                return new Response("Country must not be empty.", Status.BAD_REQUEST);
+                return new Response("El país no debe estar vacío.", Status.BAD_REQUEST);
             }
 
             int intPhoneCode;
@@ -138,26 +163,26 @@ public class PassengerControler {
             try {
                 intPhoneCode = Integer.parseInt(phoneCode);
                 if (intPhoneCode < 0 || String.valueOf(intPhoneCode).length() > 3) {
-                    return new Response("Invalid phone code (must be non-negative, max 3 digits).", Status.BAD_REQUEST);
+                    return new Response("Código telefónico inválido (debe ser no negativo, máx 3 dígitos).", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("phone code must be numeric", Status.BAD_REQUEST);
+                return new Response("El código telefónico debe ser numérico.", Status.BAD_REQUEST);
             }
 
             try {
                 longPhone = Long.parseLong(phone);
                 if (longPhone < 0 || String.valueOf(longPhone).length() > 11) {
-                    return new Response("Invalid phone number (must be non-negative, max 11 digits).", Status.BAD_REQUEST);
+                    return new Response("Número de teléfono inválido (debe ser no negativo, máx 11 dígitos).", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("phone must be numeric", Status.BAD_REQUEST);
+                return new Response("El teléfono debe ser numérico.", Status.BAD_REQUEST);
             }
 
             StoragePassenger storage = StoragePassenger.getInstance();
             Passenger passengerToUpdate = storage.getOriginalPassenger(longId);
 
             if (passengerToUpdate == null) {
-                return new Response("Passenger not found for update.", Status.NOT_FOUND);
+                return new Response("Pasajero no encontrado para actualizar.", Status.NOT_FOUND);
             }
 
             passengerToUpdate.setFirstname(firstname.trim());
@@ -167,71 +192,69 @@ public class PassengerControler {
             passengerToUpdate.setPhone(longPhone);
             passengerToUpdate.setCountry(country.trim());
 
-            return new Response("Passenger data updated successfully.", Status.OK, new Passenger(passengerToUpdate));
+            return new Response("Datos del pasajero actualizados exitosamente.", Status.OK, new Passenger(passengerToUpdate));
         } catch (Exception ex) {
-            return new Response("Unexpected error during passenger update: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
+            return new Response("Error inesperado durante la actualización del pasajero: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public static Response getPassengerById(String id) {
+    // ... (getPassengerById, getAllPassengers, getPassengerFlights sin cambios en esta iteración) ...
+    public static Response getPassengerById(String id) { 
         long longId;
         try {
             longId = Long.parseLong(id);
             if (longId < 0) {
-                return new Response("Passenger ID must be non-negative.", Status.BAD_REQUEST);
+                return new Response("El ID del pasajero debe ser no negativo.", Status.BAD_REQUEST);
             }
             if (String.valueOf(longId).length() > 15) {
-                return new Response("Passenger ID must have at most 15 digits.", Status.BAD_REQUEST);
+                 return new Response("Formato de ID de pasajero inválido (máx 15 dígitos).", Status.BAD_REQUEST);
             }
         } catch (NumberFormatException ex) {
-            return new Response("Passenger ID must be numeric", Status.BAD_REQUEST);
+            return new Response("El ID del pasajero debe ser numérico.", Status.BAD_REQUEST);
         }
 
         StoragePassenger storage = StoragePassenger.getInstance();
         Passenger passenger = storage.getPassenger(longId);
         if (passenger == null) {
-            return new Response("Passenger not found.", Status.NOT_FOUND);
+            return new Response("Pasajero no encontrado.", Status.NOT_FOUND);
         }
-        return new Response("Passenger retrieved successfully.", Status.OK, passenger);
+        return new Response("Pasajero recuperado exitosamente.", Status.OK, passenger);
     }
 
     public static Response getAllPassengers() {
         try {
             StoragePassenger storage = StoragePassenger.getInstance();
             List<Passenger> passengers = storage.getAllPassengers();
-            return new Response("Passengers retrieved successfully.", Status.OK, passengers);
+            return new Response("Pasajeros recuperados exitosamente.", Status.OK, passengers);
         } catch (Exception ex) {
-            return new Response("Unexpected error retrieving passengers: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
+            return new Response("Error inesperado al recuperar pasajeros: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
     }
-
-    public static Response getPassengerFlights(String passengerId) {
+    
+    public static Response getPassengerFlights(String passengerIdParam) { 
         try {
-            long longId;
+            long longPassengerId;
             try {
-                longId = Long.parseLong(passengerId);
-                if (longId < 0) {
-                    return new Response("Passenger ID must be non-negative.", Status.BAD_REQUEST);
-                }
-                if (String.valueOf(longId).length() > 15) {
-                    return new Response("Passenger ID must have at most 15 digits.", Status.BAD_REQUEST);
+                longPassengerId = Long.parseLong(passengerIdParam);
+                if (longPassengerId < 0) {
+                    return new Response("El ID del pasajero debe ser no negativo.", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
-                return new Response("Passenger ID must be numeric", Status.BAD_REQUEST);
+                return new Response("El ID del pasajero debe ser numérico.", Status.BAD_REQUEST);
             }
             StoragePassenger storagePassenger = StoragePassenger.getInstance();
-            Passenger passenger = storagePassenger.getOriginalPassenger(longId);
+            Passenger passenger = storagePassenger.getOriginalPassenger(longPassengerId);
 
             if (passenger == null) {
-                return new Response("Passenger not found.", Status.NOT_FOUND);
+                return new Response("Pasajero no encontrado.", Status.NOT_FOUND);
             }
 
-            List<Flight> flights = passenger.getFlights(); // Usa el getter que devuelve copia
+            List<Flight> flights = passenger.getFlights(); 
             Collections.sort(flights, Comparator.comparing(Flight::getDepartureDate));
-
-            return new Response("Passenger flights retrieved successfully.", Status.OK, flights);
+            
+            return new Response("Vuelos del pasajero recuperados exitosamente.", Status.OK, flights);
         } catch (Exception ex) {
-            return new Response("Unexpected error retrieving passenger flights: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
+            return new Response("Error inesperado al recuperar los vuelos del pasajero: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
     }
 }
