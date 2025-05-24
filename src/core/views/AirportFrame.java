@@ -54,7 +54,7 @@ public class AirportFrame extends javax.swing.JFrame {
         DataLoader.loadInitialData();
         PassengerControler.ControllerChargeIds(this);
         FlightController.ControllerChargeIds(this);
-//        PlaneController.ControllerChargeIds(this);
+        PlaneController.ControllerChargeIds(this);
 //        LocationController.ControllerChargeIds(this);
     }
     
@@ -67,15 +67,15 @@ public class AirportFrame extends javax.swing.JFrame {
     }
     
     public void chargePlaneIds(List<String> ids) {
-        System.out.println("ids a cargar:");
+        System.out.println("ids de planes a cargar:");
         for (String id : ids) {
-            JComboBoxUserSelect.addItem(id);
+            this.jComboBoxPlaneFlightRegister.addItem(id);
             System.out.println(id);
         }
     }
     
     public void chargeFlightIds(List<String> ids) {
-        System.out.println("ids a cargar:");
+        System.out.println("ids de vuelos a cargar:");
         for (String id : ids) {
             this.jComboBoxFlight.addItem(id);
             System.out.println(id);

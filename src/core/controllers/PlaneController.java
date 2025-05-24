@@ -8,6 +8,7 @@ import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Plane;
 import core.models.storage.StoragePlane;
+import core.views.AirportFrame;
 import java.util.List;
 
 /**
@@ -97,5 +98,11 @@ public class PlaneController {
         } catch (Exception ex) {
             return new Response("Error inesperado al recuperar aviones: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public static void ControllerChargeIds(AirportFrame vista) {
+        StoragePlane storage = StoragePlane.getInstance();
+            List<String > ids = storage.getAllIdPlanes();
+            vista.chargePlaneIds(ids);
     }
 }

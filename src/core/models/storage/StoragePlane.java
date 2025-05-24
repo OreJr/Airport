@@ -98,4 +98,13 @@ public class StoragePlane {
         Collections.sort(copiedList, Comparator.comparing(Plane::getId));
         return copiedList;
     }
+
+    public List<String> getAllIdPlanes() {
+        List<Plane> planes = getAllPlanes();
+      List<String> ids = new ArrayList<>();
+      for (Plane plane: planes){
+          ids.add(plane.getId());
+      }
+      return ids;
+    }
 }
