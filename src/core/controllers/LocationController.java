@@ -8,6 +8,7 @@ import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Location;
 import core.models.storage.StorageLocation;
+import core.views.AirportFrame;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -128,5 +129,11 @@ public class LocationController {
         } catch (Exception ex) {
             return new Response("Error inesperado al recuperar ubicaciones: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public static void ControllerChargeIds(AirportFrame vista) {
+        StorageLocation storage = StorageLocation.getInstance();
+        List<String> ids = storage.getAllIdLocations();
+        vista.chargeLocationIds(ids);
     }
 }

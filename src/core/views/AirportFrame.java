@@ -44,20 +44,20 @@ public class AirportFrame extends javax.swing.JFrame {
         this.setBackground(new Color(0, 0, 0, 0));
         this.setLocationRelativeTo(null);
         // se cargan los ids del json
-        
+
         this.generateMonths();
         this.generateDays();
         this.generateHours();
         this.generateMinutes();
         this.blockPanels();
-        
+
         DataLoader.loadInitialData();
         PassengerControler.ControllerChargeIds(this);
         FlightController.ControllerChargeIds(this);
         PlaneController.ControllerChargeIds(this);
-//        LocationController.ControllerChargeIds(this);
+        LocationController.ControllerChargeIds(this);
     }
-    
+
     public void chargePassengerIds(List<String> ids) {
         System.out.println("ids a cargar:");
         for (String id : ids) {
@@ -65,7 +65,7 @@ public class AirportFrame extends javax.swing.JFrame {
             System.out.println(id);
         }
     }
-    
+
     public void chargePlaneIds(List<String> ids) {
         System.out.println("ids de planes a cargar:");
         for (String id : ids) {
@@ -73,7 +73,7 @@ public class AirportFrame extends javax.swing.JFrame {
             System.out.println(id);
         }
     }
-    
+
     public void chargeFlightIds(List<String> ids) {
         System.out.println("ids de vuelos a cargar:");
         for (String id : ids) {
@@ -81,11 +81,13 @@ public class AirportFrame extends javax.swing.JFrame {
             System.out.println(id);
         }
     }
-    
+
     public void chargeLocationIds(List<String> ids) {
-        System.out.println("ids a cargar:");
+        System.out.println("ids de locations a cargar:");
         for (String id : ids) {
-            JComboBoxUserSelect.addItem(id);
+            this.jComboBoxDepartureLocationFlightRegister.addItem(id);
+            this.jComboBoxArrivalLocationFlightRegister.addItem(id);
+            this.jComboBoxScaleLocationFlightRegister.addItem(id);
             System.out.println(id);
         }
     }
@@ -1885,7 +1887,7 @@ public class AirportFrame extends javax.swing.JFrame {
     private void JComboBoxUserSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JComboBoxUserSelectActionPerformed
         try {
             String id = JComboBoxUserSelect.getSelectedItem().toString();
-            if (!id.equals(JComboBoxUserSelect.getItemAt(0  ))) {
+            if (!id.equals(JComboBoxUserSelect.getItemAt(0))) {
                 jTextFieldIDUser.setText(id);
                 jTextFieldIDAddFlight.setText(id);
             } else {

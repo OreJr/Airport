@@ -98,4 +98,13 @@ public class StorageLocation {
         Collections.sort(copiedList, Comparator.comparing(Location::getAirportId));
         return copiedList;
     }
+
+    public List<String> getAllIdLocations() {
+        List<Location> locations = getAllLocations();
+       List<String> ids = new ArrayList<>();
+      for (Location location: locations){
+          ids.add(location.getAirportId());
+      }
+      return ids;
+    }
 }
