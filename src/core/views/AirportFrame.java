@@ -78,6 +78,7 @@ public class AirportFrame extends javax.swing.JFrame {
         System.out.println("ids de vuelos a cargar:");
         for (String id : ids) {
             this.jComboBoxFlight.addItem(id);
+            this.jComboBoxIDDelayFlight.addItem(id);
             System.out.println(id);
         }
     }
@@ -1621,6 +1622,7 @@ public class AirportFrame extends javax.swing.JFrame {
             JComboBoxMinuteScale.setSelectedItem("Minute");
 
             this.jComboBoxFlight.addItem(id);
+            this.jComboBoxIDDelayFlight.addItem(id);
         }
 
 //        LocalDateTime departureDate = LocalDateTime.of(year, month, day, hour, minutes);
