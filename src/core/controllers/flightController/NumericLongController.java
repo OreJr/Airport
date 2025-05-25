@@ -4,20 +4,19 @@
  */
 package core.controllers.flightController;
 
-import core.models.Flight;
-
 /**
  *
  * @author OreJr
  */
-public class DelayFlightController {
+public class NumericLongController {
 
-    public static boolean DelayFlight(Flight originalFlight, int intHours, int intMinutes) {
+    public static long isValidNumeric(String passengerIdParam) {
+        long longPassengerId;
         try {
-            originalFlight.delay(intHours, intMinutes);
-            return true;
-        } catch (Exception ex) {
-            return false;
+            longPassengerId = Long.parseLong(passengerIdParam);
+            return longPassengerId;
+        } catch (NumberFormatException e) {
+            return -1;
         }
     }
 }

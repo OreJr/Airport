@@ -1,0 +1,21 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package core.controllers.flightController;
+
+import core.models.Location;
+import core.models.storage.StorageLocation;
+
+/**
+ *
+ * @author OreJr
+ */
+public class ExistInstanceLocationController {
+
+    public static Location obtainLocation (String LocationId) {
+        StorageLocation locationStorage = StorageLocation.getInstance();
+        Location originalDepartureLocation = locationStorage.getOriginalLocation(LocationId);
+        return originalDepartureLocation;
+    }
+}

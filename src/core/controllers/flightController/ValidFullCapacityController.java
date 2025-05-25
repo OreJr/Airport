@@ -10,14 +10,12 @@ import core.models.Flight;
  *
  * @author OreJr
  */
-public class DelayFlightController {
+public class ValidFullCapacityController {
 
-    public static boolean DelayFlight(Flight originalFlight, int intHours, int intMinutes) {
-        try {
-            originalFlight.delay(intHours, intMinutes);
+    public static boolean isFullFlight(Flight originalFlight) {
+        if (originalFlight.getNumPassengers() >= originalFlight.getPlane().getMaxCapacity()) {
             return true;
-        } catch (Exception ex) {
-            return false;
         }
+        return false;
     }
 }

@@ -4,20 +4,15 @@
  */
 package core.controllers.flightController;
 
-import core.models.Flight;
-
 /**
  *
  * @author OreJr
  */
-public class DelayFlightController {
-
-    public static boolean DelayFlight(Flight originalFlight, int intHours, int intMinutes) {
-        try {
-            originalFlight.delay(intHours, intMinutes);
-            return true;
-        } catch (Exception ex) {
+public class ValidTimeProvidedController {
+    public static boolean isValid(String string) {
+        if (string!= null && !string.trim().isEmpty()) {
             return false;
         }
+        return true ;
     }
 }

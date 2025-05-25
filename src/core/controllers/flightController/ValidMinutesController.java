@@ -4,20 +4,16 @@
  */
 package core.controllers.flightController;
 
-import core.models.Flight;
-
 /**
  *
  * @author OreJr
  */
-public class DelayFlightController {
+public class ValidMinutesController {
 
-    public static boolean DelayFlight(Flight originalFlight, int intHours, int intMinutes) {
-        try {
-            originalFlight.delay(intHours, intMinutes);
-            return true;
-        } catch (Exception ex) {
+    public static boolean isValid(int intMinutesDurationArrival) {
+        if (intMinutesDurationArrival >= 60) {
             return false;
         }
+        return true;
     }
 }

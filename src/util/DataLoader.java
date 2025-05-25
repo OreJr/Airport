@@ -4,7 +4,7 @@ import core.controllers.flightController.ValidFlightIdFormatController;
 import core.controllers.locationController.ValidAirportIdFormatLocationController;
 import core.controllers.passengerController.CreatePassengerController; // Usando el nombre de tu archivo
 import core.controllers.planeController.ValidPlaneIdFormatController;
-import core.controllers.flightController.CreateFlightController;
+import core.controllers.flightController.CreateFlightControllerResponse;
 import core.controllers.locationController.CreateLocationController;
 import core.controllers.planeController.CreatePlaneController;
 import core.controllers.utils.Response;
@@ -231,7 +231,7 @@ public class DataLoader {
                     minutesDurationScale = "0";
                 }
 
-                Response response = CreateFlightController.createFlight(id, planeId, departureLocationId, arrivalLocationId, scaleLocationId,
+                Response response = CreateFlightControllerResponse.createFlight(id, planeId, departureLocationId, arrivalLocationId, scaleLocationId,
                         year, month, day, hour, minute,
                         hoursDurationArrival, minutesDurationArrival,
                         hoursDurationScale, minutesDurationScale);

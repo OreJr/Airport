@@ -5,19 +5,16 @@
 package core.controllers.flightController;
 
 import core.models.Flight;
+import core.models.storage.StorageFlight;
 
 /**
  *
  * @author OreJr
  */
-public class DelayFlightController {
+public class AddFlightController {
 
-    public static boolean DelayFlight(Flight originalFlight, int intHours, int intMinutes) {
-        try {
-            originalFlight.delay(intHours, intMinutes);
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
+    public static boolean add(Flight newFlight) {
+        StorageFlight flightStorage = StorageFlight.getInstance();
+        return flightStorage.addFlight(newFlight);
     }
 }

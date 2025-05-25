@@ -4,12 +4,12 @@
  */
 package core.views;
 
-import core.controllers.flightController.AddPassengerToFlightController;
+import core.controllers.flightController.AddPassengerToFlightControllerResponse;
 import core.controllers.flightController.ChargeIdsFlightsController;
 import util.DataLoader;
 import core.controllers.passengerController.CreatePassengerController;
-import core.controllers.flightController.CreateFlightController;
-import core.controllers.flightController.DelayFlightController;
+import core.controllers.flightController.CreateFlightControllerResponse;
+import core.controllers.flightController.DelayFlightControllerResponse;
 import core.controllers.flightController.GetAllFlightsController;
 import core.controllers.locationController.ChargeIdsLocationController;
 import core.controllers.locationController.CreateLocationController;
@@ -1606,7 +1606,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String hoursDurationsScale = JComboBoxHourScale.getItemAt(JComboBoxHourScale.getSelectedIndex());
         String minutesDurationsScale = JComboBoxMinuteScale.getItemAt(JComboBoxMinuteScale.getSelectedIndex());
 
-        Response response = CreateFlightController.createFlight(id, planeId, departureLocationId, arrivalLocationId,
+        Response response = CreateFlightControllerResponse.createFlight(id, planeId, departureLocationId, arrivalLocationId,
                 scaleLocationId, year, month, day, hour, minutes, hoursDurationsArrival,
                 minutesDurationsArrival, hoursDurationsScale,
                 minutesDurationsScale);
@@ -1722,7 +1722,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String passengerId = jTextFieldIDAddFlight.getText();
         String flightId = jComboBoxFlight.getItemAt(jComboBoxFlight.getSelectedIndex());
 
-        Response response = AddPassengerToFlightController.addPassengerToFlight(flightId, passengerId);
+        Response response = AddPassengerToFlightControllerResponse.addPassengerToFlight(flightId, passengerId);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1755,7 +1755,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String hours = jComboBoxHour.getItemAt(jComboBoxHour.getSelectedIndex());
         String minutes = jComboBoxMinute.getItemAt(jComboBoxMinute.getSelectedIndex());
 
-        Response response = DelayFlightController.delayFlight(flightId, hours, minutes);
+        Response response = DelayFlightControllerResponse.delayFlight(flightId, hours, minutes);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);

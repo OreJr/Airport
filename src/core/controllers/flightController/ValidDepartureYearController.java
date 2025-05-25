@@ -4,20 +4,19 @@
  */
 package core.controllers.flightController;
 
-import core.models.Flight;
+import java.time.LocalDate;
 
 /**
  *
  * @author OreJr
  */
-public class DelayFlightController {
+public class ValidDepartureYearController {
 
-    public static boolean DelayFlight(Flight originalFlight, int intHours, int intMinutes) {
-        try {
-            originalFlight.delay(intHours, intMinutes);
-            return true;
-        } catch (Exception ex) {
+    public static boolean isValidDepartureYear(int intYear) {
+        int currentYear = LocalDate.now().getYear();
+        if (intYear < currentYear) {
             return false;
         }
+        return true;
     }
 }
