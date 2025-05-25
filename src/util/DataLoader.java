@@ -1,10 +1,10 @@
 package util; // Asegúrate que el paquete sea correcto para tu proyecto
 
-import core.controllers.FlightController.IsValidFlightIdFormatController;
+import core.controllers.flightController.IsValidFlightIdFormatController;
 import core.controllers.LocationController;
 import core.controllers.PassengerControler; // Usando el nombre de tu archivo
 import core.controllers.PlaneController;
-import core.controllers.FlightController.CreateFlightController;
+import core.controllers.flightController.CreateFlightController;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 

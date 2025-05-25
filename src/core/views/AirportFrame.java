@@ -4,16 +4,16 @@
  */
 package core.views;
 
-import core.controllers.FlightController.AddPassengerToFlightController;
-import core.controllers.FlightController.ChargeIdsFlightsController;
+import core.controllers.flightController.AddPassengerToFlightController;
+import core.controllers.flightController.ChargeIdsFlightsController;
 import util.DataLoader;
-import core.controllers.FlightController.IsValidFlightIdFormatController;
+import core.controllers.flightController.IsValidFlightIdFormatController;
 import core.controllers.LocationController;
 import core.controllers.PassengerControler;
 import core.controllers.PlaneController;
-import core.controllers.FlightController.CreateFlightController;
-import core.controllers.FlightController.DelayFlightController;
-import core.controllers.FlightController.GetAllFlightsController;
+import core.controllers.flightController.CreateFlightController;
+import core.controllers.flightController.DelayFlightController;
+import core.controllers.flightController.GetAllFlightsController;
 import core.controllers.utils.Response;
 import core.models.Flight;
 import core.models.Location;
