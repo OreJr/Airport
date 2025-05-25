@@ -14,6 +14,7 @@ import core.models.storage.StorageFlight;
  * @author OreJr
  */
 public class GetFlightByIdController {
+    //no se usa?
     public static Response getFlightById(String flightId) {
         if (!ValidFlightIdFormatController.isValidFlightIdFormat(flightId)) {
             return new Response("El ID del vuelo debe seguir el formato XXXYYY.", Status.BAD_REQUEST);

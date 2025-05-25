@@ -2,7 +2,7 @@ package util; // Asegúrate que el paquete sea correcto para tu proyecto
 
 import core.controllers.flightController.ValidFlightIdFormatController;
 import core.controllers.locationController.ValidAirportIdFormatLocationController;
-import core.controllers.PassengerControler; // Usando el nombre de tu archivo
+import core.controllers.passengerController.CreatePassengerController; // Usando el nombre de tu archivo
 import core.controllers.PlaneController;
 import core.controllers.flightController.CreateFlightController;
 import core.controllers.locationController.CreateLocationController;
@@ -175,7 +175,7 @@ public class DataLoader {
                 String phone = String.valueOf(passJson.getLong("phone"));
                 String country = passJson.getString("country");
 
-                Response response = PassengerControler.createPassenger(id, firstname, lastname, year, month, day, countryPhoneCode, phone, country);
+                Response response = CreatePassengerController.createPassenger(id, firstname, lastname, year, month, day, countryPhoneCode, phone, country);
                 if (response.getStatus() == Status.CREATED) {
                     count++;
                 } else {

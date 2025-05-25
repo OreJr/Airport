@@ -4,7 +4,6 @@
  */
 package core.controllers.flightController;
 
-
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Flight;
@@ -17,6 +16,7 @@ import core.models.storage.StoragePassenger;
  * @author OreJr
  */
 public class AddPassengerToFlightController {
+
     public static Response addPassengerToFlight(String flightId, String passengerIdParam) {
         try {
             StorageFlight flightStorage = StorageFlight.getInstance();

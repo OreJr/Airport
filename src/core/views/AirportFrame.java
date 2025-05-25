@@ -9,7 +9,7 @@ import core.controllers.flightController.ChargeIdsFlightsController;
 import util.DataLoader;
 import core.controllers.flightController.ValidFlightIdFormatController;
 import core.controllers.locationController.ValidAirportIdFormatLocationController;
-import core.controllers.PassengerControler;
+import core.controllers.passengerController.CreatePassengerController;
 import core.controllers.PlaneController;
 import core.controllers.flightController.CreateFlightController;
 import core.controllers.flightController.DelayFlightController;
@@ -17,6 +17,10 @@ import core.controllers.flightController.GetAllFlightsController;
 import core.controllers.locationController.ChargeIdsLocationController;
 import core.controllers.locationController.CreateLocationController;
 import core.controllers.locationController.GetAllLocationsController;
+import core.controllers.passengerController.ChargeIdsPassengerController;
+import core.controllers.passengerController.GetAllPassengersController;
+import core.controllers.passengerController.GetPassengerFlightsController;
+import core.controllers.passengerController.UpdatePassengerController;
 import core.controllers.utils.Response;
 import core.models.Flight;
 import core.models.Location;
@@ -60,7 +64,7 @@ public class AirportFrame extends javax.swing.JFrame {
         this.blockPanels();
 
         DataLoader.loadInitialData();
-        PassengerControler.ControllerChargeIds(this);
+        ChargeIdsPassengerController.ControllerChargeIds(this);
         ChargeIdsFlightsController.ControllerChargeIds(this);
         PlaneController.ControllerChargeIds(this);
         ChargeIdsLocationController.ControllerChargeIds(this);
@@ -1498,7 +1502,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String phone = jTextFieldPhoneUserRegister.getText();
         String country = jTextFieldCountryUserRegister.getText();
 
-        Response response = PassengerControler.createPassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
+        Response response = CreatePassengerController.createPassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1676,7 +1680,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String phone = jTextFieldPhone.getText();
         String country = jTextFieldCountry.getText();
 
-        Response response = PassengerControler.updatePassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
+        Response response = UpdatePassengerController.updatePassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1784,7 +1788,7 @@ public class AirportFrame extends javax.swing.JFrame {
 //                passenger = p;
 //            }
 //        }
-        Response response = PassengerControler.getPassengerFlights(passengerId);
+        Response response = GetPassengerFlightsController.getPassengerFlights(passengerId);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1805,7 +1809,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void jButtonRefreshPassengersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshPassengersActionPerformed
         // TODO add your handling code here:
-        Response response = PassengerControler.getAllPassengers();
+        Response response = GetAllPassengersController.getAllPassengers();
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
