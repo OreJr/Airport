@@ -10,7 +10,7 @@ import util.DataLoader;
 import core.controllers.flightController.ValidFlightIdFormatController;
 import core.controllers.locationController.ValidAirportIdFormatLocationController;
 import core.controllers.passengerController.CreatePassengerController;
-import core.controllers.PlaneController;
+import core.controllers.planeController.ValidPlaneIdFormatController;
 import core.controllers.flightController.CreateFlightController;
 import core.controllers.flightController.DelayFlightController;
 import core.controllers.flightController.GetAllFlightsController;
@@ -21,6 +21,9 @@ import core.controllers.passengerController.ChargeIdsPassengerController;
 import core.controllers.passengerController.GetAllPassengersController;
 import core.controllers.passengerController.GetPassengerFlightsController;
 import core.controllers.passengerController.UpdatePassengerController;
+import core.controllers.planeController.ChargeIdsPlaneController;
+import core.controllers.planeController.CreatePlaneController;
+import core.controllers.planeController.GetAllPlanesController;
 import core.controllers.utils.Response;
 import core.models.Flight;
 import core.models.Location;
@@ -66,7 +69,7 @@ public class AirportFrame extends javax.swing.JFrame {
         DataLoader.loadInitialData();
         ChargeIdsPassengerController.ControllerChargeIds(this);
         ChargeIdsFlightsController.ControllerChargeIds(this);
-        PlaneController.ControllerChargeIds(this);
+        ChargeIdsPlaneController.ControllerChargeIds(this);
         ChargeIdsLocationController.ControllerChargeIds(this);
     }
 
@@ -1538,7 +1541,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String airline = jTextFieldAirlineAirPlaneRegister.getText();
 
 //        this.planes.add(new Plane(id, brand, model, maxCapacity, airline));
-        Response response = PlaneController.createPlane(id, brand, model, maxCapacity, airline);
+        Response response = CreatePlaneController.createPlane(id, brand, model, maxCapacity, airline);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1852,7 +1855,7 @@ public class AirportFrame extends javax.swing.JFrame {
     private void jButtonRefreshAllPlanesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshAllPlanesActionPerformed
         // TODO add your handling code here:
 
-        Response response = PlaneController.getAllPlanes();
+        Response response = GetAllPlanesController.getAllPlanes();
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);

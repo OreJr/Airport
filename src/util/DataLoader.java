@@ -3,9 +3,10 @@ package util; // Asegúrate que el paquete sea correcto para tu proyecto
 import core.controllers.flightController.ValidFlightIdFormatController;
 import core.controllers.locationController.ValidAirportIdFormatLocationController;
 import core.controllers.passengerController.CreatePassengerController; // Usando el nombre de tu archivo
-import core.controllers.PlaneController;
+import core.controllers.planeController.ValidPlaneIdFormatController;
 import core.controllers.flightController.CreateFlightController;
 import core.controllers.locationController.CreateLocationController;
+import core.controllers.planeController.CreatePlaneController;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 
@@ -134,7 +135,7 @@ public class DataLoader {
                 String maxCapacity = String.valueOf(planeJson.getInt("maxCapacity"));
                 String airline = planeJson.getString("airline");
 
-                Response response = PlaneController.createPlane(id, brand, model, maxCapacity, airline);
+                Response response = CreatePlaneController.createPlane(id, brand, model, maxCapacity, airline);
                  if (response.getStatus() == Status.CREATED) {
                     count++;
                 } else {

@@ -2,43 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package core.controllers;
+package core.controllers.planeController;
 
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Plane;
 import core.models.storage.StoragePlane;
-import core.views.AirportFrame;
-import java.util.List;
 
 /**
  *
- * @author JorgeDuarte 
+ * @author OreJr
  */
-public class PlaneController {
-
-    private static boolean isValidPlaneIdFormat(String id) {
-        if (id == null || id.length() != 7) { 
-            return false;
-        }
-        for (int i = 0; i < 2; i++) { 
-            char c = id.charAt(i);
-            if (!Character.isUpperCase(c)) {
-                return false;
-            }
-        }
-        for (int i = 2; i < 7; i++) { 
-            char c = id.charAt(i);
-            if (!Character.isDigit(c)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+public class CreatePlaneController {
     public static Response createPlane(String id, String brand, String model, String maxCapacity, String airline) {
         try {
-            if (!isValidPlaneIdFormat(id)) {
+            if (!ValidPlaneIdFormatController.isValidPlaneIdFormat(id)) {
                 return new Response("El ID del avión debe seguir el formato XXYYYYY (ej. AB12345).", Status.BAD_REQUEST);
             }
             if (brand == null || brand.trim().isEmpty()) {
@@ -76,33 +54,5 @@ public class PlaneController {
         } catch (Exception ex) {
             return new Response("Error inesperado al crear el avión: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    public static Response getPlaneById(String id) {
-        if (!isValidPlaneIdFormat(id)) {
-            return new Response("El ID del avión debe seguir el formato XXYYYYY.", Status.BAD_REQUEST);
-        }
-        StoragePlane storage = StoragePlane.getInstance();
-        Plane plane = storage.getPlane(id); 
-        if (plane == null) {
-            return new Response("Avión no encontrado.", Status.NOT_FOUND);
-        }
-        return new Response("Avión recuperado exitosamente.", Status.OK, plane);
-    }
-
-    public static Response getAllPlanes() {
-        try {
-            StoragePlane storage = StoragePlane.getInstance();
-            List<Plane> planes = storage.getAllPlanes(); 
-            return new Response("Aviones recuperados exitosamente.", Status.OK, planes);
-        } catch (Exception ex) {
-            return new Response("Error inesperado al recuperar aviones: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public static void ControllerChargeIds(AirportFrame vista) {
-        StoragePlane storage = StoragePlane.getInstance();
-            List<String > ids = storage.getAllIdPlanes();
-            vista.chargePlaneIds(ids);
     }
 }
