@@ -1,9 +1,10 @@
 package util; // Asegúrate que el paquete sea correcto para tu proyecto
 
-import core.controllers.FlightController;
+import core.controllers.FlightController.IsValidFlightIdFormatController;
 import core.controllers.LocationController;
 import core.controllers.PassengerControler; // Usando el nombre de tu archivo
 import core.controllers.PlaneController;
+import core.controllers.FlightController.CreateFlightController;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 
@@ -228,7 +229,7 @@ public class DataLoader {
                     minutesDurationScale = "0";
                 }
 
-                Response response = FlightController.createFlight(id, planeId, departureLocationId, arrivalLocationId, scaleLocationId,
+                Response response = CreateFlightController.createFlight(id, planeId, departureLocationId, arrivalLocationId, scaleLocationId,
                         year, month, day, hour, minute,
                         hoursDurationArrival, minutesDurationArrival,
                         hoursDurationScale, minutesDurationScale);
