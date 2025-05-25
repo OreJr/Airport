@@ -1730,7 +1730,6 @@ public class AirportFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
-            jTextFieldIDAddFlight.setText("");
             jComboBoxFlight.setSelectedItem("Flight");
         }
 
