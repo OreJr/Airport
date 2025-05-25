@@ -15,7 +15,7 @@ import core.models.storage.StoragePlane;
  */
 
 //no se usa?
-public class GetPlaneByIdPlaneController {
+public class GetPlaneByIdController {
     public static Response getPlaneById(String id) {
         if (!ValidPlaneIdFormatController.isValidPlaneIdFormat(id)) {
             return new Response("El ID del avión debe seguir el formato XXYYYYY.", Status.BAD_REQUEST);

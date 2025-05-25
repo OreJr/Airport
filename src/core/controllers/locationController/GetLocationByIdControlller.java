@@ -16,7 +16,7 @@ import core.models.storage.StorageLocation;
 
 //esto no se usa?
 
-public class GetLocationByIdLocationControlller {
+public class GetLocationByIdControlller {
     public static Response getLocationById(String airportId) {
         if (!ValidAirportIdFormatLocationController.isValidAirportIdFormat(airportId)) {
             return new Response("El ID del aeropuerto debe ser 3 letras mayúsculas.", Status.BAD_REQUEST);
