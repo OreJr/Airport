@@ -2,11 +2,11 @@ package util; // Asegúrate que el paquete sea correcto para tu proyecto
 
 import core.controllers.flightController.ValidFlightIdFormatController;
 import core.controllers.locationController.ValidAirportIdFormatLocationController;
-import core.controllers.passengerController.CreatePassengerController; // Usando el nombre de tu archivo
+import core.controllers.passengerController.CreatePassengerControllerResponse; // Usando el nombre de tu archivo
 import core.controllers.planeController.ValidPlaneIdFormatController;
 import core.controllers.flightController.CreateFlightControllerResponse;
-import core.controllers.locationController.CreateLocationController;
-import core.controllers.planeController.CreatePlaneController;
+import core.controllers.locationController.CreateLocationControllerResponse;
+import core.controllers.planeController.CreatePlaneControllerResponse;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 
@@ -102,7 +102,7 @@ public class DataLoader {
                 String latitude = String.valueOf(locJson.getDouble("airportLatitude"));
                 String longitude = String.valueOf(locJson.getDouble("airportLongitude"));
 
-                Response response = CreateLocationController.createLocation(id, name, city, country, latitude, longitude);
+                Response response = CreateLocationControllerResponse.createLocation(id, name, city, country, latitude, longitude);
                 if (response.getStatus() == Status.CREATED) {
                     count++;
                 } else {
@@ -135,7 +135,7 @@ public class DataLoader {
                 String maxCapacity = String.valueOf(planeJson.getInt("maxCapacity"));
                 String airline = planeJson.getString("airline");
 
-                Response response = CreatePlaneController.createPlane(id, brand, model, maxCapacity, airline);
+                Response response = CreatePlaneControllerResponse.createPlane(id, brand, model, maxCapacity, airline);
                  if (response.getStatus() == Status.CREATED) {
                     count++;
                 } else {
@@ -176,7 +176,7 @@ public class DataLoader {
                 String phone = String.valueOf(passJson.getLong("phone"));
                 String country = passJson.getString("country");
 
-                Response response = CreatePassengerController.createPassenger(id, firstname, lastname, year, month, day, countryPhoneCode, phone, country);
+                Response response = CreatePassengerControllerResponse.createPassenger(id, firstname, lastname, year, month, day, countryPhoneCode, phone, country);
                 if (response.getStatus() == Status.CREATED) {
                     count++;
                 } else {

@@ -1,0 +1,19 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package core.controllers.locationController;
+
+import core.models.Location;
+import core.models.storage.StorageLocation;
+
+/**
+ *
+ * @author OreJr
+ */
+public class AddLocationController {
+    public static boolean add(Location newLocation) {
+        StorageLocation storage = StorageLocation.getInstance();
+        return storage.addLocation(newLocation);
+    }
+}

@@ -8,7 +8,7 @@ package core.controllers.flightController;
  *
  * @author OreJr
  */
-public class ValidTimeProvidedController {
+public class ValidStringNotEmpty {
     public static boolean isValid(String string) {
         if (string!= null && !string.trim().isEmpty()) {
             return false;

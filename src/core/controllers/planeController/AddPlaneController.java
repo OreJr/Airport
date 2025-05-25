@@ -5,15 +5,15 @@
 package core.controllers.planeController;
 
 import core.models.Plane;
+import core.models.storage.StoragePlane;
 
 /**
  *
  * @author OreJr
  */
-public class CreatePlaneController {
-    public static Plane createPlane(String id, String brand, String model, int maxCapacity, String airline) {
-        Plane newPlane = new Plane(id, brand, model, maxCapacity, airline);
-
-        return newPlane;
+public class AddPlaneController {
+    public static boolean add(Plane newPlane) {
+        StoragePlane storage = StoragePlane.getInstance();
+        return storage.addPlane(newPlane);
     }
 }

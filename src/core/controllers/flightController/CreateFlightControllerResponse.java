@@ -101,8 +101,8 @@ public class CreateFlightControllerResponse {
                 }
 
             } else {
-                boolean scaleHoursProvided = !ValidTimeProvidedController.isValid(hoursDurationScale);
-                boolean scaleMinutesProvided = !ValidTimeProvidedController.isValid(minutesDurationScale);
+                boolean scaleHoursProvided = !ValidStringNotEmpty.isValid(hoursDurationScale);
+                boolean scaleMinutesProvided = !ValidStringNotEmpty.isValid(minutesDurationScale);
 
                 if (scaleHoursProvided) {
                     intHoursDurationScale = NumericIntController.isValidNumeric(hoursDurationScale.trim());

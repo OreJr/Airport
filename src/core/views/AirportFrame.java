@@ -7,19 +7,19 @@ package core.views;
 import core.controllers.flightController.AddPassengerToFlightControllerResponse;
 import core.controllers.flightController.ChargeIdsFlightsController;
 import util.DataLoader;
-import core.controllers.passengerController.CreatePassengerController;
+import core.controllers.passengerController.CreatePassengerControllerResponse;
 import core.controllers.flightController.CreateFlightControllerResponse;
 import core.controllers.flightController.DelayFlightControllerResponse;
 import core.controllers.flightController.GetAllFlightsController;
 import core.controllers.locationController.ChargeIdsLocationController;
-import core.controllers.locationController.CreateLocationController;
+import core.controllers.locationController.CreateLocationControllerResponse;
 import core.controllers.locationController.GetAllLocationsController;
 import core.controllers.passengerController.ChargeIdsPassengerController;
 import core.controllers.passengerController.GetAllPassengersController;
 import core.controllers.passengerController.GetPassengerFlightsController;
 import core.controllers.passengerController.UpdatePassengerController;
 import core.controllers.planeController.ChargeIdsPlaneController;
-import core.controllers.planeController.CreatePlaneController;
+import core.controllers.planeController.CreatePlaneControllerResponse;
 import core.controllers.planeController.GetAllPlanesController;
 import core.controllers.utils.Response;
 import core.models.Flight;
@@ -1502,7 +1502,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String phone = jTextFieldPhoneUserRegister.getText();
         String country = jTextFieldCountryUserRegister.getText();
 
-        Response response = CreatePassengerController.createPassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
+        Response response = CreatePassengerControllerResponse.createPassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1538,7 +1538,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String airline = jTextFieldAirlineAirPlaneRegister.getText();
 
 //        this.planes.add(new Plane(id, brand, model, maxCapacity, airline));
-        Response response = CreatePlaneController.createPlane(id, brand, model, maxCapacity, airline);
+        Response response = CreatePlaneControllerResponse.createPlane(id, brand, model, maxCapacity, airline);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1567,7 +1567,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String longitude = jTextFieldAirportLongitude.getText();
 
         //  this.locations.add(new Location(id, name, city, country, latitude, longitude));
-        Response response = CreateLocationController.createLocation(id, name, city, country, latitude, longitude);
+        Response response = CreateLocationControllerResponse.createLocation(id, name, city, country, latitude, longitude);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
