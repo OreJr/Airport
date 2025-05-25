@@ -15,7 +15,7 @@ import core.models.storage.StorageFlight;
  */
 public class GetFlightByIdController {
     public static Response getFlightById(String flightId) {
-        if (!IsValidFlightIdFormatController.isValidFlightIdFormat(flightId)) {
+        if (!ValidFlightIdFormatController.isValidFlightIdFormat(flightId)) {
             return new Response("El ID del vuelo debe seguir el formato XXXYYY.", Status.BAD_REQUEST);
         }
         StorageFlight storage = StorageFlight.getInstance();

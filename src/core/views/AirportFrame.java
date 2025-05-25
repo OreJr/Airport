@@ -7,13 +7,16 @@ package core.views;
 import core.controllers.flightController.AddPassengerToFlightController;
 import core.controllers.flightController.ChargeIdsFlightsController;
 import util.DataLoader;
-import core.controllers.flightController.IsValidFlightIdFormatController;
-import core.controllers.LocationController;
+import core.controllers.flightController.ValidFlightIdFormatController;
+import core.controllers.locationController.ValidAirportIdFormatLocationController;
 import core.controllers.PassengerControler;
 import core.controllers.PlaneController;
 import core.controllers.flightController.CreateFlightController;
 import core.controllers.flightController.DelayFlightController;
 import core.controllers.flightController.GetAllFlightsController;
+import core.controllers.locationController.ChargeIdsLocationController;
+import core.controllers.locationController.CreateLocationController;
+import core.controllers.locationController.GetAllLocationsController;
 import core.controllers.utils.Response;
 import core.models.Flight;
 import core.models.Location;
@@ -60,7 +63,7 @@ public class AirportFrame extends javax.swing.JFrame {
         PassengerControler.ControllerChargeIds(this);
         ChargeIdsFlightsController.ControllerChargeIds(this);
         PlaneController.ControllerChargeIds(this);
-        LocationController.ControllerChargeIds(this);
+        ChargeIdsLocationController.ControllerChargeIds(this);
     }
 
     public void chargePassengerIds(List<String> ids) {
@@ -1560,7 +1563,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String longitude = jTextFieldAirportLongitude.getText();
 
         //  this.locations.add(new Location(id, name, city, country, latitude, longitude));
-        Response response = LocationController.createLocation(id, name, city, country, latitude, longitude);
+        Response response = CreateLocationController.createLocation(id, name, city, country, latitude, longitude);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1867,7 +1870,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void jButtonRefreshAllLocationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshAllLocationsActionPerformed
         // TODO add your handling code here:
-        Response response = LocationController.getAllLocations();
+        Response response = GetAllLocationsController.getAllLocations();
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);

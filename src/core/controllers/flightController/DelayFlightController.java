@@ -33,7 +33,7 @@ public class DelayFlightController {
             StorageFlight flightStorage = StorageFlight.getInstance();
             Flight originalFlight = flightStorage.getOriginalFlight(flightId);
             if (originalFlight == null) {
-                if (!IsValidFlightIdFormatController.isValidFlightIdFormat(flightId)) {
+                if (!ValidFlightIdFormatController.isValidFlightIdFormat(flightId)) {
                     return new Response("Formato de ID de vuelo inválido para retraso.", Status.BAD_REQUEST);
                 }
                 return new Response("Vuelo no encontrado.", Status.NOT_FOUND);

@@ -27,7 +27,7 @@ public class CreateFlightController {
             String hoursDurationArrival, String minutesDurationArrival,
             String hoursDurationScale, String minutesDurationScale) {
         try {
-            if (!IsValidFlightIdFormatController.isValidFlightIdFormat(id)) {
+            if (!ValidFlightIdFormatController.isValidFlightIdFormat(id)) {
                 return new Response("El ID del vuelo debe seguir el formato XXXYYY (ej. ABC123).", Status.BAD_REQUEST);
             }
 

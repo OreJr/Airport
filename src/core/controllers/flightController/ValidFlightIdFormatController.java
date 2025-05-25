@@ -8,7 +8,7 @@ package core.controllers.flightController;
  *
  * @author JorgeDuarte
  */
-public class IsValidFlightIdFormatController {
+public class ValidFlightIdFormatController {
 
     public static boolean isValidFlightIdFormat(String id) {
         if (id == null || id.length() != 6) {
