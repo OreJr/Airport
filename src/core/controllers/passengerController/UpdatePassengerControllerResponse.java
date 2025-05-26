@@ -76,7 +76,7 @@ public class UpdatePassengerControllerResponse {
             if (intPhoneCode == -1) {
                 return new Response("El código telefónico debe ser numérico.", Status.BAD_REQUEST);
             } else {
-                if (!ValidNumberController.isValidNumber(intPhoneCode)) {
+                if (!ValidNumberAndCapacityController.isValidNumber(intPhoneCode,3)) {
                     return new Response("Código telefónico inválido (debe ser no negativo, máx 3 dígitos).", Status.BAD_REQUEST);
                 }
             }
@@ -85,7 +85,7 @@ public class UpdatePassengerControllerResponse {
             if (longPhone == -1) {
                 return new Response("El teléfono debe ser numérico.", Status.BAD_REQUEST);
             } else {
-                if (!ValidNumberController.isValidNumber(longPhone)) {
+                if (!ValidNumberAndCapacityController.isValidNumber(longPhone)) {
                     return new Response("Número de teléfono inválido (debe ser no negativo, máx 11 dígitos).", Status.BAD_REQUEST);
                 }
             }

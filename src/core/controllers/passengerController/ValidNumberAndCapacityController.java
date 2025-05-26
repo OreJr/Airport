@@ -8,10 +8,10 @@ package core.controllers.passengerController;
  *
  * @author OreJr
  */
-public class ValidNumberController {
+public class ValidNumberAndCapacityController {
 
-    public static boolean isValidNumber(int intValue) {
-        if (intValue < 0 || String.valueOf(intValue).length() > 3) {
+    public static boolean isValidNumber(int intValue,int number) {
+        if (intValue < 0 || String.valueOf(intValue).length() > number) {
             return false;
         }
         return true;
