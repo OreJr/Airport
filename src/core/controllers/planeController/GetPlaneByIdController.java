@@ -7,6 +7,7 @@ package core.controllers.planeController;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Plane;
+import core.models.storage.IPlaneStorage;
 import core.models.storage.StoragePlane;
 
 /**
@@ -20,8 +21,8 @@ public class GetPlaneByIdController {
         if (!ValidPlaneIdFormatController.isValidPlaneIdFormat(id)) {
             return new Response("El ID del avión debe seguir el formato XXYYYYY.", Status.BAD_REQUEST);
         }
-        StoragePlane storage = StoragePlane.getInstance();
-        Plane plane = storage.getPlane(id); 
+        IPlaneStorage  storage = StoragePlane.getInstance();
+        Plane plane = (Plane) storage.get(id); 
         if (plane == null) {
             return new Response("Avión no encontrado.", Status.NOT_FOUND);
         }

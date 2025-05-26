@@ -41,7 +41,7 @@ public class DelayFlightControllerResponse {
             }
             Boolean delayFlightController = DelayFlightController.DelayFlight(originalFlight, intHours, intMinutes);
             if (delayFlightController) {
-                return new Response("Vuelo retrasado exitosamente.", Status.OK, new Flight(originalFlight));
+                return new Response("Vuelo retrasado exitosamente.", Status.OK, originalFlight);
             } else {
                 return new Response("Error inesperado al retrasar el vuelo", Status.INTERNAL_SERVER_ERROR);
             }

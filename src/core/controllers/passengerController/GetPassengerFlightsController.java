@@ -7,7 +7,9 @@ package core.controllers.passengerController;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Flight;
+import core.models.IFlight;
 import core.models.Passenger;
+import core.models.storage.IPassengerStorage;
 import core.models.storage.StoragePassenger;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,15 +31,15 @@ public class GetPassengerFlightsController {
             } catch (NumberFormatException ex) {
                 return new Response("El ID del pasajero debe ser numérico.", Status.BAD_REQUEST);
             }
-            StoragePassenger storagePassenger = StoragePassenger.getInstance();
-            Passenger passenger = storagePassenger.getOriginalPassenger(longPassengerId);
+            IPassengerStorage storagePassenger = StoragePassenger.getInstance();
+            Passenger passenger = (Passenger) storagePassenger.get(longPassengerId);
 
             if (passenger == null) {
                 return new Response("Pasajero no encontrado.", Status.NOT_FOUND);
             }
 
-            List<Flight> flights = passenger.getFlights(); 
-            Collections.sort(flights, Comparator.comparing(Flight::getDepartureDate));
+            List<IFlight> flights = passenger.getFlights(); 
+            Collections.sort(flights, Comparator.comparing(IFlight::getDepartureDate));
             
             return new Response("Vuelos del pasajero recuperados exitosamente.", Status.OK, flights);
         } catch (Exception ex) {

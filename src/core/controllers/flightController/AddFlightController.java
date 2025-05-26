@@ -5,6 +5,7 @@
 package core.controllers.flightController;
 
 import core.models.Flight;
+import core.models.storage.IFlightStorage;
 import core.models.storage.StorageFlight;
 
 /**
@@ -15,8 +16,8 @@ public class AddFlightController implements AddInterface<Flight> {
 
     @Override
     public boolean add(Flight newFlight) {
-        StorageFlight flightStorage = StorageFlight.getInstance();
-        return flightStorage.addFlight(newFlight);
+        IFlightStorage flightStorage = StorageFlight.getInstance();
+        return flightStorage.add(newFlight);
     }
 
 }

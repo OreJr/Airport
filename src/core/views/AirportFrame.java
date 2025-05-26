@@ -76,10 +76,10 @@ public class AirportFrame extends javax.swing.JFrame {
         chargeIdsLocationController.ControllerChargeIds(this);
     }
 
-    public void chargePassengerIds(List<String> ids) {
+    public void chargePassengerIds(List<Long> ids) {
         System.out.println("ids a cargar:");
-        for (String id : ids) {
-            JComboBoxUserSelect.addItem(id);
+        for (Long id : ids) {
+            JComboBoxUserSelect.addItem(Long.toString(id));
             System.out.println("esto se está ejecutando");
             System.out.println(id);
         }

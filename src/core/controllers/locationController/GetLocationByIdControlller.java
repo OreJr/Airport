@@ -7,6 +7,7 @@ package core.controllers.locationController;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Location;
+import core.models.storage.ILocationStorage;
 import core.models.storage.StorageLocation;
 
 /**
@@ -21,8 +22,8 @@ public class GetLocationByIdControlller {
         if (!ValidAirportIdFormatLocationController.isValidAirportIdFormat(airportId)) {
             return new Response("El ID del aeropuerto debe ser 3 letras mayúsculas.", Status.BAD_REQUEST);
         }
-        StorageLocation storage = StorageLocation.getInstance();
-        Location location = storage.getLocation(airportId);
+        ILocationStorage storage = StorageLocation.getInstance();
+        Location location = (Location) storage.get(airportId);
         if (location == null) {
             return new Response("Aeropuerto (Ubicación) no encontrado.", Status.NOT_FOUND);
         }

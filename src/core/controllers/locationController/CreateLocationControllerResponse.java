@@ -70,7 +70,7 @@ public class CreateLocationControllerResponse {
             if (!addLocationController.add(newLocation)) {
                 return new Response("Un aeropuerto con ese ID ya existe.", Status.BAD_REQUEST);
             }
-            return new Response("Aeropuerto (Ubicación) creado exitosamente.", Status.CREATED, new Location(newLocation));
+            return new Response("Aeropuerto (Ubicación) creado exitosamente.", Status.CREATED, newLocation);
         } catch (Exception ex) {
             return new Response("Error inesperado al crear la ubicación: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }

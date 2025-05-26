@@ -6,6 +6,7 @@ package core.controllers.planeController;
 
 import core.controllers.flightController.AddInterface;
 import core.models.Plane;
+import core.models.storage.IPlaneStorage;
 import core.models.storage.StoragePlane;
 
 /**
@@ -16,8 +17,8 @@ public class AddPlaneController implements AddInterface<Plane> {
 
     @Override
     public boolean add(Plane newPlane) {
-        StoragePlane storage = StoragePlane.getInstance();
-        return storage.addPlane(newPlane);
+        IPlaneStorage storage = StoragePlane.getInstance();
+        return storage.add(newPlane);
     }
 
 }

@@ -139,7 +139,7 @@ public class CreateFlightControllerResponse {
             if (!addFlightController.add(newFlight)) {
                 return new Response("Un vuelo con ese ID ya existe.", Status.BAD_REQUEST);
             }
-            return new Response("Vuelo creado exitosamente.", Status.CREATED, new Flight(newFlight));
+            return new Response("Vuelo creado exitosamente.", Status.CREATED, newFlight);
         } catch (Exception ex) {
             return new Response("Error inesperado al crear el vuelo: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }

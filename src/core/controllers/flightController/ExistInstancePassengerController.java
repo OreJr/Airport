@@ -5,6 +5,7 @@
 package core.controllers.flightController;
 
 import core.models.Passenger;
+import core.models.storage.IPassengerStorage;
 import core.models.storage.StoragePassenger;
 
 /**
@@ -15,8 +16,8 @@ public class ExistInstancePassengerController implements ExistInstanceInterface<
 
     @Override
     public Passenger obtain(Long longPassengerId) {
-        StoragePassenger passengerStorage = StoragePassenger.getInstance();
-        Passenger originalPassenger = passengerStorage.getOriginalPassenger(longPassengerId);
+        IPassengerStorage passengerStorage = StoragePassenger.getInstance();
+        Passenger originalPassenger = (Passenger) passengerStorage.get(longPassengerId);
         return originalPassenger;
     }
 }

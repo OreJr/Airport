@@ -101,7 +101,7 @@ public class CreatePassengerControllerResponse {
             if (!addPassengerController.add(newPassenger)) {
                 return new Response("Un pasajero con ese ID ya existe.", Status.BAD_REQUEST);
             }
-            return new Response("Pasajero creado exitosamente.", Status.CREATED, new Passenger(newPassenger));
+            return new Response("Pasajero creado exitosamente.", Status.CREATED, newPassenger);
         } catch (Exception ex) {
             return new Response("Error inesperado durante la creación del pasajero: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }

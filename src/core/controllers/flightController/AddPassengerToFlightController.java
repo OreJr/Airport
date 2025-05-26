@@ -15,7 +15,7 @@ public class AddPassengerToFlightController {
 
     public static Boolean addPassengerController(Flight originalFlight, Passenger originalPassenger) {
         try {
-            originalFlight.addPassenger(new Passenger(originalPassenger));
+            originalFlight.addPassenger(originalPassenger);
             originalPassenger.addFlight(originalFlight);
             return true;
         } catch (Exception ex) {

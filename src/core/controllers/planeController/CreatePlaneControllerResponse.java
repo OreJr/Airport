@@ -52,7 +52,7 @@ public class CreatePlaneControllerResponse {
             if (!addPlaneController.add(newPlane)) {
                 return new Response("Un avión con ese ID ya existe.", Status.BAD_REQUEST);
             }
-            return new Response("Avión creado exitosamente.", Status.CREATED, new Plane(newPlane));
+            return new Response("Avión creado exitosamente.", Status.CREATED, newPlane);
         } catch (Exception ex) {
             return new Response("Error inesperado al crear el avión: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }

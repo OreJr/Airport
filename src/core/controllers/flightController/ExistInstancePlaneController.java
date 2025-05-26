@@ -5,6 +5,7 @@
 package core.controllers.flightController;
 
 import core.models.Plane;
+import core.models.storage.IPlaneStorage;
 import core.models.storage.StoragePlane;
 
 /**
@@ -15,8 +16,8 @@ public class ExistInstancePlaneController implements ExistInstanceInterface<Plan
 
     @Override
     public Plane obtain(String planeId) {
-        StoragePlane planeStorage = StoragePlane.getInstance();
-        Plane originalPlane = planeStorage.getOriginalPlane(planeId);
+        IPlaneStorage planeStorage = StoragePlane.getInstance();
+        Plane originalPlane = (Plane) planeStorage.get(planeId);
         return originalPlane;
     }
 }

@@ -5,6 +5,7 @@
 package core.controllers.flightController;
 
 import core.models.Flight;
+import core.models.IPassenger;
 import core.models.Passenger;
 
 /**
@@ -14,7 +15,7 @@ import core.models.Passenger;
 public class ValidPassengerInTheFlightController {
 
     public static boolean isPassengerInTheFlight(Flight originalFlight, long longPassengerId) {
-        for (Passenger p : originalFlight.getPassengers()) {
+        for (IPassenger p : originalFlight.getPassengers()) {
             if (p.getId() == longPassengerId) {
                 return true;
             }

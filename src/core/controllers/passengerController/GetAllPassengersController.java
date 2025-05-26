@@ -6,7 +6,9 @@ package core.controllers.passengerController;
 
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
+import core.models.IPassenger;
 import core.models.Passenger;
+import core.models.storage.IPassengerStorage;
 import core.models.storage.StoragePassenger;
 import java.util.List;
 
@@ -17,8 +19,8 @@ import java.util.List;
 public class GetAllPassengersController {
     public static Response getAllPassengers() {
         try {
-            StoragePassenger storage = StoragePassenger.getInstance();
-            List<Passenger> passengers = storage.getAllPassengers();
+            IPassengerStorage storage = StoragePassenger.getInstance();
+            List<IPassenger> passengers = storage.getAll();
             return new Response("Pasajeros recuperados exitosamente.", Status.OK, passengers);
         } catch (Exception ex) {
             return new Response("Error inesperado al recuperar pasajeros: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);

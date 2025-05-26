@@ -7,6 +7,7 @@ package core.controllers.passengerController;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Passenger;
+import core.models.storage.IPassengerStorage;
 import core.models.storage.StoragePassenger;
 
 /**
@@ -29,8 +30,8 @@ public class GetPassengerByIdController {
             return new Response("El ID del pasajero debe ser numérico.", Status.BAD_REQUEST);
         }
 
-        StoragePassenger storage = StoragePassenger.getInstance();
-        Passenger passenger = storage.getPassenger(longId);
+        IPassengerStorage storage = StoragePassenger.getInstance();
+        Passenger passenger = (Passenger) storage.get(longId);
         if (passenger == null) {
             return new Response("Pasajero no encontrado.", Status.NOT_FOUND);
         }

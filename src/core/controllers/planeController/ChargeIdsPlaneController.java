@@ -5,6 +5,7 @@
 package core.controllers.planeController;
 
 import core.controllers.flightController.ChargeIdsInterface;
+import core.models.storage.IPlaneStorage;
 import core.models.storage.StoragePlane;
 import core.views.AirportFrame;
 import java.util.List;
@@ -17,8 +18,8 @@ public class ChargeIdsPlaneController implements ChargeIdsInterface {
 
     @Override
     public void ControllerChargeIds(AirportFrame vista) {
-        StoragePlane storage = StoragePlane.getInstance();
-        List<String> ids = storage.getAllIdPlanes();
+        IPlaneStorage  storage = StoragePlane.getInstance();
+        List<String> ids = storage.getAllEntityIds();
         vista.chargePlaneIds(ids);
     }
 }

@@ -6,7 +6,9 @@ package core.controllers.planeController;
 
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
+import core.models.IPlane;
 import core.models.Plane;
+import core.models.storage.IPlaneStorage;
 import core.models.storage.StoragePlane;
 import java.util.List;
 
@@ -17,8 +19,8 @@ import java.util.List;
 public class GetAllPlanesController {
     public static Response getAllPlanes() {
         try {
-            StoragePlane storage = StoragePlane.getInstance();
-            List<Plane> planes = storage.getAllPlanes(); 
+            IPlaneStorage  storage = StoragePlane.getInstance();
+            List<IPlane> planes = storage.getAll(); 
             return new Response("Aviones recuperados exitosamente.", Status.OK, planes);
         } catch (Exception ex) {
             return new Response("Error inesperado al recuperar aviones: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);

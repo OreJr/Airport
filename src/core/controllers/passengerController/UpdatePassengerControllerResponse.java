@@ -104,7 +104,7 @@ public class UpdatePassengerControllerResponse {
                 return new Response("Error inesperado durante la actualización del pasajero", Status.INTERNAL_SERVER_ERROR);
             }
 
-            return new Response("Datos del pasajero actualizados exitosamente.", Status.OK, new Passenger(passengerToUpdate));
+            return new Response("Datos del pasajero actualizados exitosamente.", Status.OK, passengerToUpdate);
         } catch (Exception ex) {
             return new Response("Error inesperado durante la actualización del pasajero: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }

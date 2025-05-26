@@ -7,6 +7,7 @@ package core.controllers.flightController;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Flight;
+import core.models.storage.IFlightStorage;
 import core.models.storage.StorageFlight;
 
 /**
@@ -19,8 +20,8 @@ public class GetFlightByIdController {
         if (!ValidFlightIdFormatController.isValidFlightIdFormat(flightId)) {
             return new Response("El ID del vuelo debe seguir el formato XXXYYY.", Status.BAD_REQUEST);
         }
-        StorageFlight storage = StorageFlight.getInstance();
-        Flight flightCopy = storage.getFlightCopy(flightId);
+        IFlightStorage storage = StorageFlight.getInstance();
+        Flight flightCopy = (Flight) storage.get(flightId);
         if (flightCopy == null) {
             return new Response("Vuelo no encontrado.", Status.NOT_FOUND);
         }

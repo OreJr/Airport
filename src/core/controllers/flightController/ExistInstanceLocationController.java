@@ -5,6 +5,7 @@
 package core.controllers.flightController;
 
 import core.models.Location;
+import core.models.storage.ILocationStorage;
 import core.models.storage.StorageLocation;
 
 /**
@@ -15,8 +16,8 @@ public class ExistInstanceLocationController implements ExistInstanceInterface<L
 
     @Override
     public Location obtain(String LocationId) {
-        StorageLocation locationStorage = StorageLocation.getInstance();
-        Location originalDepartureLocation = locationStorage.getOriginalLocation(LocationId);
+        ILocationStorage locationStorage = StorageLocation.getInstance();
+        Location originalDepartureLocation = (Location) locationStorage.get(LocationId);
         return originalDepartureLocation;
     }
 }

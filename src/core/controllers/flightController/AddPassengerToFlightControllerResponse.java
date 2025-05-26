@@ -47,11 +47,11 @@ public class AddPassengerToFlightControllerResponse {
                 return new Response("El pasajero ya está en este vuelo.", Status.BAD_REQUEST);
             }
 
-            originalFlight.addPassenger(new Passenger(originalPassenger));
+            originalFlight.addPassenger(originalPassenger);
             originalPassenger.addFlight(originalFlight);
             boolean isAddPassenger = AddPassengerToFlightController.addPassengerController(originalFlight, originalPassenger);
             if (isAddPassenger) {
-                return new Response("Pasajero añadido al vuelo exitosamente.", Status.OK, new Flight(originalFlight));
+                return new Response("Pasajero añadido al vuelo exitosamente.", Status.OK, originalFlight);
 
             } else {
                 return new Response("Error inesperado al añadir pasajero al vuelo", Status.INTERNAL_SERVER_ERROR);
