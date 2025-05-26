@@ -11,9 +11,10 @@ import core.models.storage.StorageLocation;
  *
  * @author OreJr
  */
-public class ExistInstanceLocationController {
+public class ExistInstanceLocationController implements ExistInstanceInterface<Location,String> {
 
-    public static Location obtainLocation (String LocationId) {
+    @Override
+    public Location obtain(String LocationId) {
         StorageLocation locationStorage = StorageLocation.getInstance();
         Location originalDepartureLocation = locationStorage.getOriginalLocation(LocationId);
         return originalDepartureLocation;

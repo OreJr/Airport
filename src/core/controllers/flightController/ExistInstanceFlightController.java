@@ -11,9 +11,10 @@ import core.models.storage.StorageFlight;
  *
  * @author OreJr
  */
-public class ExistInstanceFlightController {
+public class ExistInstanceFlightController implements ExistInstanceInterface<Flight, String> {
 
-    public static Flight obtainFlight(String flightId) {
+    @Override
+    public Flight obtain(String flightId) {
         StorageFlight flightStorage = StorageFlight.getInstance();
         Flight originalFlight = flightStorage.getOriginalFlight(flightId);
         return originalFlight;

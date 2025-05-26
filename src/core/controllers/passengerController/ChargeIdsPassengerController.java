@@ -4,6 +4,7 @@
  */
 package core.controllers.passengerController;
 
+import core.controllers.flightController.ChargeIdsInterface;
 import core.models.storage.StoragePassenger;
 import core.views.AirportFrame;
 import java.util.List;
@@ -12,10 +13,13 @@ import java.util.List;
  *
  * @author OreJr
  */
-public class ChargeIdsPassengerController {
-    public static void ControllerChargeIds(AirportFrame vista){
-            StoragePassenger storage = StoragePassenger.getInstance();
-            List<String > ids = storage.getAllIdPassengers();
-            vista.chargePassengerIds(ids);
+public class ChargeIdsPassengerController implements ChargeIdsInterface {
+
+    @Override
+    public void ControllerChargeIds(AirportFrame vista) {
+        StoragePassenger storage = StoragePassenger.getInstance();
+        List<String> ids = storage.getAllIdPassengers();
+        vista.chargePassengerIds(ids);
     }
+
 }

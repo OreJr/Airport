@@ -12,8 +12,10 @@ import java.util.List;
  *
  * @author OreJr
  */
-public class ChargeIdsFlightsController {
-     public static void ControllerChargeIds(AirportFrame vista) {
+public class ChargeIdsFlightsController implements ChargeIdsInterface {
+
+    @Override
+    public void ControllerChargeIds(AirportFrame vista) {
         StorageFlight storage = StorageFlight.getInstance();
         List<String> ids = storage.getAllIdFlights();
         vista.chargeFlightIds(ids);

@@ -11,10 +11,12 @@ import core.models.storage.StorageFlight;
  *
  * @author OreJr
  */
-public class AddFlightController {
+public class AddFlightController implements AddInterface<Flight> {
 
-    public static boolean add(Flight newFlight) {
+    @Override
+    public boolean add(Flight newFlight) {
         StorageFlight flightStorage = StorageFlight.getInstance();
         return flightStorage.addFlight(newFlight);
     }
+
 }

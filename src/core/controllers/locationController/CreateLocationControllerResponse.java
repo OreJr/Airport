@@ -4,6 +4,8 @@
  */
 package core.controllers.locationController;
 
+import core.controllers.flightController.AddFlightController;
+import core.controllers.flightController.AddInterface;
 import core.controllers.flightController.NumericDoubleController;
 import core.controllers.flightController.ValidStringNotEmpty;
 import core.controllers.utils.Response;
@@ -18,6 +20,7 @@ public class CreateLocationControllerResponse {
 
     public static Response createLocation(String airportId, String airportName, String airportCity, String airportCountry, String airportLatitude, String airportLongitude) {
         try {
+            AddInterface addLocationController = new AddLocationController();
             if (!ValidAirportIdFormatLocationController.isValidAirportIdFormat(airportId)) {
                 return new Response("El ID del aeropuerto debe ser 3 letras mayúsculas.", Status.BAD_REQUEST);
             }
@@ -64,7 +67,7 @@ public class CreateLocationControllerResponse {
 
             Location newLocation = CreateLocationController.createLocation(airportId, airportName.trim(), airportCity.trim(), airportCountry.trim(), roundedLatitude, roundedLongitude);
 
-            if (!AddLocationController.add(newLocation)) {
+            if (!addLocationController.add(newLocation)) {
                 return new Response("Un aeropuerto con ese ID ya existe.", Status.BAD_REQUEST);
             }
             return new Response("Aeropuerto (Ubicación) creado exitosamente.", Status.CREATED, new Location(newLocation));

@@ -23,27 +23,30 @@ public class CreateFlightControllerResponse {
             String hoursDurationArrival, String minutesDurationArrival,
             String hoursDurationScale, String minutesDurationScale) {
         try {
+            ExistInstanceInterface<Plane,String> existInstancePlaneController = new ExistInstancePlaneController();
+            ExistInstanceInterface<Location,String> existInstanceLocationController = new ExistInstanceLocationController();
+            AddInterface addFlightController = new AddFlightController();
             if (!ValidFlightIdFormatController.isValidFlightIdFormat(id)) {
                 return new Response("El ID del vuelo debe seguir el formato XXXYYY (ej. ABC123).", Status.BAD_REQUEST);
             }
 
-            Plane originalPlane = ExistInstancePlaneController.obtainPlane(planeId);
+            Plane originalPlane = existInstancePlaneController.obtain(planeId);
             if (originalPlane == null) {
                 return new Response("Avión con ID " + planeId + " no encontrado.", Status.BAD_REQUEST);
             }
 
-            Location originalDepartureLocation = ExistInstanceLocationController.obtainLocation(departureLocationId);
+            Location originalDepartureLocation = existInstanceLocationController.obtain(departureLocationId);
             if (originalDepartureLocation == null) {
                 return new Response("Ubicación de salida " + departureLocationId + " no encontrada.", Status.BAD_REQUEST);
             }
-            Location originalArrivalLocation = ExistInstanceLocationController.obtainLocation(arrivalLocationId);
+            Location originalArrivalLocation = existInstanceLocationController.obtain(arrivalLocationId);
             if (originalArrivalLocation == null) {
                 return new Response("Ubicación de llegada " + arrivalLocationId + " no encontrada.", Status.BAD_REQUEST);
             }
 
             Location originalScaleLocation = null;
             if (ExistScaleLocationController.ExistScaleLocation(scaleLocationId)) {
-                originalScaleLocation = ExistInstanceLocationController.obtainLocation(departureLocationId);
+                originalScaleLocation = existInstanceLocationController.obtain(departureLocationId);
                 if (originalScaleLocation == null) {
                     return new Response("Ubicación de escala " + scaleLocationId + " no encontrada.", Status.BAD_REQUEST);
                 }
@@ -133,7 +136,7 @@ public class CreateFlightControllerResponse {
                         departureDateTime, intHoursDurationArrival, intMinutesDurationArrival);
             }
 
-            if (!AddFlightController.add(newFlight)) {
+            if (!addFlightController.add(newFlight)) {
                 return new Response("Un vuelo con ese ID ya existe.", Status.BAD_REQUEST);
             }
             return new Response("Vuelo creado exitosamente.", Status.CREATED, new Flight(newFlight));

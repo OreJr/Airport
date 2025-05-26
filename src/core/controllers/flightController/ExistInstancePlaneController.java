@@ -11,9 +11,10 @@ import core.models.storage.StoragePlane;
  *
  * @author OreJr
  */
-public class ExistInstancePlaneController {
+public class ExistInstancePlaneController implements ExistInstanceInterface<Plane, String> {
 
-    public static Plane obtainPlane(String planeId) {
+    @Override
+    public Plane obtain(String planeId) {
         StoragePlane planeStorage = StoragePlane.getInstance();
         Plane originalPlane = planeStorage.getOriginalPlane(planeId);
         return originalPlane;

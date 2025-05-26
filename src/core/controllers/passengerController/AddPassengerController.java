@@ -4,6 +4,7 @@
  */
 package core.controllers.passengerController;
 
+import core.controllers.flightController.AddInterface;
 import core.models.Passenger;
 import core.models.storage.StoragePassenger;
 
@@ -11,9 +12,12 @@ import core.models.storage.StoragePassenger;
  *
  * @author OreJr
  */
-public class AddPassengerController {
-    public static boolean add(Passenger newPassenger) {
+public class AddPassengerController implements AddInterface<Passenger> {
+
+    @Override
+    public boolean add(Passenger newPassenger) {
         StoragePassenger storage = StoragePassenger.getInstance();
         return storage.addPassenger(newPassenger);
     }
+
 }

@@ -4,6 +4,7 @@
  */
 package core.controllers.locationController;
 
+import core.controllers.flightController.AddInterface;
 import core.models.Location;
 import core.models.storage.StorageLocation;
 
@@ -11,8 +12,10 @@ import core.models.storage.StorageLocation;
  *
  * @author OreJr
  */
-public class AddLocationController {
-    public static boolean add(Location newLocation) {
+public class AddLocationController implements AddInterface<Location> {
+
+    @Override
+    public boolean add(Location newLocation) {
         StorageLocation storage = StorageLocation.getInstance();
         return storage.addLocation(newLocation);
     }

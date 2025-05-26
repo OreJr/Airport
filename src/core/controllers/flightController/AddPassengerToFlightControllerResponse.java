@@ -17,7 +17,10 @@ public class AddPassengerToFlightControllerResponse {
 
     public static Response addPassengerToFlight(String flightId, String passengerIdParam) {
         try {
-            Flight originalFlight = ExistInstanceFlightController.obtainFlight(flightId);
+            ExistInstanceInterface<Flight,String> existInstanceFlightController = new ExistInstanceFlightController();
+            ExistInstanceInterface<Passenger, Long> existInstancePassengerController = new ExistInstancePassengerController();
+            
+            Flight originalFlight = existInstanceFlightController.obtain(flightId);
             if (originalFlight == null) {
                 if (!ValidFlightIdFormatController.isValidFlightIdFormat(flightId)) {
                     return new Response("Formato de ID de vuelo inválido.", Status.BAD_REQUEST);
@@ -31,7 +34,7 @@ public class AddPassengerToFlightControllerResponse {
                 return new Response("El ID del pasajero debe ser numérico.", Status.BAD_REQUEST);
             }
 
-            Passenger originalPassenger = ExistInstancePassengerController.obtainPassenger(longPassengerId);
+            Passenger originalPassenger = existInstancePassengerController.obtain(longPassengerId);
             if (originalPassenger == null) {
                 return new Response("Pasajero no encontrado.", Status.NOT_FOUND);
             }

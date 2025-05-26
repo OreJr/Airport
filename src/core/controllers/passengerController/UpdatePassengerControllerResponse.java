@@ -4,6 +4,8 @@
  */
 package core.controllers.passengerController;
 
+import core.controllers.flightController.ExistInstanceFlightController;
+import core.controllers.flightController.ExistInstanceInterface;
 import core.controllers.flightController.ExistInstancePassengerController;
 import core.controllers.flightController.NumericIntController;
 import core.controllers.flightController.NumericLongController;
@@ -22,6 +24,7 @@ public class UpdatePassengerControllerResponse {
 
     public static Response updatePassenger(String id, String firstname, String lastname, String year, String month, String day, String phoneCode, String phone, String country) {
         try {
+            ExistInstanceInterface<Passenger,Long> existInstancePassengerController = new ExistInstancePassengerController();
             long longId;
 
             longId = NumericLongController.isValidNumeric(id);
@@ -90,7 +93,7 @@ public class UpdatePassengerControllerResponse {
                 }
             }
 
-            Passenger passengerToUpdate = ExistInstancePassengerController.obtainPassenger(longId);
+            Passenger passengerToUpdate = existInstancePassengerController.obtain(longId);
 
             if (passengerToUpdate == null) {
                 return new Response("Pasajero no encontrado para actualizar.", Status.NOT_FOUND);

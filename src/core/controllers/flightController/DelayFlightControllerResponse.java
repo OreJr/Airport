@@ -7,7 +7,6 @@ package core.controllers.flightController;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Flight;
-import core.models.storage.StorageFlight;
 
 /**
  *
@@ -17,7 +16,7 @@ public class DelayFlightControllerResponse {
 
     public static Response delayFlight(String flightId, String hours, String minutes) {
         try {
-
+            ExistInstanceInterface<Flight, String> existInstanceFlightController = new ExistInstanceFlightController();
             int intHours = NumericIntController.isValidNumeric(hours),
                     intMinutes = NumericIntController.isValidNumeric(minutes);
 
@@ -32,7 +31,8 @@ public class DelayFlightControllerResponse {
                 }
             }
 
-            Flight originalFlight = ExistInstanceFlightController.obtainFlight(flightId);
+            Flight originalFlight = existInstanceFlightController.obtain(flightId);
+
             if (originalFlight == null) {
                 if (!ValidFlightIdFormatController.isValidFlightIdFormat(flightId)) {
                     return new Response("Formato de ID de vuelo inválido para retraso.", Status.BAD_REQUEST);

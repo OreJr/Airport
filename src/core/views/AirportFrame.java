@@ -6,6 +6,7 @@ package core.views;
 
 import core.controllers.flightController.AddPassengerToFlightControllerResponse;
 import core.controllers.flightController.ChargeIdsFlightsController;
+import core.controllers.flightController.ChargeIdsInterface;
 import util.DataLoader;
 import core.controllers.passengerController.CreatePassengerControllerResponse;
 import core.controllers.flightController.CreateFlightControllerResponse;
@@ -47,6 +48,10 @@ public class AirportFrame extends javax.swing.JFrame {
 //    private ArrayList<Flight> flights;
 
     public AirportFrame() {
+        ChargeIdsInterface chargeIdsPassengerController = new ChargeIdsPassengerController();
+        ChargeIdsInterface chargeIdsFlightsController = new ChargeIdsFlightsController();
+        ChargeIdsInterface chargeIdsPlaneController = new ChargeIdsPlaneController();
+        ChargeIdsInterface chargeIdsLocationController = new ChargeIdsLocationController();
         initComponents();
 
 //        this.passengers = new ArrayList<>();
@@ -64,16 +69,18 @@ public class AirportFrame extends javax.swing.JFrame {
         this.blockPanels();
 
         DataLoader.loadInitialData();
-        ChargeIdsPassengerController.ControllerChargeIds(this);
-        ChargeIdsFlightsController.ControllerChargeIds(this);
-        ChargeIdsPlaneController.ControllerChargeIds(this);
-        ChargeIdsLocationController.ControllerChargeIds(this);
+
+        chargeIdsPassengerController.ControllerChargeIds(this);
+        chargeIdsFlightsController.ControllerChargeIds(this);
+        chargeIdsPlaneController.ControllerChargeIds(this);
+        chargeIdsLocationController.ControllerChargeIds(this);
     }
 
     public void chargePassengerIds(List<String> ids) {
         System.out.println("ids a cargar:");
         for (String id : ids) {
             JComboBoxUserSelect.addItem(id);
+            System.out.println("esto se está ejecutando");
             System.out.println(id);
         }
     }

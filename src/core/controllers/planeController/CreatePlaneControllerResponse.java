@@ -4,6 +4,8 @@
  */
 package core.controllers.planeController;
 
+import core.controllers.flightController.AddFlightController;
+import core.controllers.flightController.AddInterface;
 import core.controllers.flightController.NumericIntController;
 import core.controllers.flightController.ValidStringNotEmpty;
 import core.controllers.passengerController.ValidNumberAndCapacityController;
@@ -18,6 +20,7 @@ public class CreatePlaneControllerResponse {
 
     public static Response createPlane(String id, String brand, String model, String maxCapacity, String airline) {
         try {
+            AddInterface addPlaneController = new AddPlaneController();
             if (!ValidPlaneIdFormatController.isValidPlaneIdFormat(id)) {
                 return new Response("El ID del avión debe seguir el formato XXYYYYY (ej. AB12345).", Status.BAD_REQUEST);
             }
@@ -46,7 +49,7 @@ public class CreatePlaneControllerResponse {
             
             Plane newPlane = CreatePlaneController.createPlane(id, brand.trim(), model.trim(), intMaxCapacity, airline.trim());
 
-            if (!AddPlaneController.add(newPlane)) {
+            if (!addPlaneController.add(newPlane)) {
                 return new Response("Un avión con ese ID ya existe.", Status.BAD_REQUEST);
             }
             return new Response("Avión creado exitosamente.", Status.CREATED, new Plane(newPlane));

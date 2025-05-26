@@ -4,6 +4,8 @@
  */
 package core.controllers.passengerController;
 
+import core.controllers.flightController.AddFlightController;
+import core.controllers.flightController.AddInterface;
 import core.controllers.flightController.NumericIntController;
 import core.controllers.flightController.NumericLongController;
 import core.controllers.flightController.ValidCreateLocalDateTimeController;
@@ -21,6 +23,7 @@ public class CreatePassengerControllerResponse {
 
     public static Response createPassenger(String id, String firstname, String lastname, String year, String month, String day, String phoneCode, String phone, String country) {
         try {
+            AddInterface addPassengerController = new AddPassengerController();
             long longId;
 
             longId = NumericLongController.isValidNumeric(id);
@@ -95,7 +98,7 @@ public class CreatePassengerControllerResponse {
                 return new Response("Error inesperado durante la creación del pasajero", Status.INTERNAL_SERVER_ERROR);
             }
 
-            if (!AddPassengerController.add(newPassenger)) {
+            if (!addPassengerController.add(newPassenger)) {
                 return new Response("Un pasajero con ese ID ya existe.", Status.BAD_REQUEST);
             }
             return new Response("Pasajero creado exitosamente.", Status.CREATED, new Passenger(newPassenger));

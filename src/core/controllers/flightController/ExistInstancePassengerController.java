@@ -11,9 +11,10 @@ import core.models.storage.StoragePassenger;
  *
  * @author OreJr
  */
-public class ExistInstancePassengerController {
+public class ExistInstancePassengerController implements ExistInstanceInterface<Passenger, Long> {
 
-    public  static Passenger obtainPassenger(long longPassengerId) {
+    @Override
+    public Passenger obtain(Long longPassengerId) {
         StoragePassenger passengerStorage = StoragePassenger.getInstance();
         Passenger originalPassenger = passengerStorage.getOriginalPassenger(longPassengerId);
         return originalPassenger;
