@@ -17,7 +17,7 @@ import core.controllers.locationController.GetAllLocationsController;
 import core.controllers.passengerController.ChargeIdsPassengerController;
 import core.controllers.passengerController.GetAllPassengersController;
 import core.controllers.passengerController.GetPassengerFlightsController;
-import core.controllers.passengerController.UpdatePassengerController;
+import core.controllers.passengerController.UpdatePassengerControllerResponse;
 import core.controllers.planeController.ChargeIdsPlaneController;
 import core.controllers.planeController.CreatePlaneControllerResponse;
 import core.controllers.planeController.GetAllPlanesController;
@@ -1680,7 +1680,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String phone = jTextFieldPhone.getText();
         String country = jTextFieldCountry.getText();
 
-        Response response = UpdatePassengerController.updatePassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
+        Response response = UpdatePassengerControllerResponse.updatePassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);

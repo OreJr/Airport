@@ -5,7 +5,9 @@
 package core.controllers.flightController;
 
 import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 
 /**
  *
@@ -20,6 +22,16 @@ public class ValidCreateLocalDateTimeController {
             return localDateTime;
         } catch (DateTimeException e) {
             return localDateTime ;
+        }
+    }
+    
+    public static LocalDate isValidLocalDateTime(int intYear,int intMonth,int intDay) {
+        LocalDate localDate = null;
+        try {
+            localDate = LocalDate.of(intYear, intMonth, intMonth);
+            return localDate;
+        } catch (DateTimeException e) {
+            return localDate ;
         }
     }
 }

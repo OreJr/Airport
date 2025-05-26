@@ -4,6 +4,7 @@
  */
 package core.controllers.passengerController;
 
+import core.controllers.flightController.ExistInstancePassengerController;
 import core.controllers.flightController.NumericIntController;
 import core.controllers.flightController.NumericLongController;
 import core.controllers.flightController.ValidCreateLocalDateTimeController;
@@ -15,11 +16,11 @@ import java.time.LocalDate;
 
 /**
  *
- * @author JorgeDuarte and OreJr
+ * @author OreJr
  */
-public class CreatePassengerControllerResponse {
+public class UpdatePassengerControllerResponse {
 
-    public static Response createPassenger(String id, String firstname, String lastname, String year, String month, String day, String phoneCode, String phone, String country) {
+    public static Response updatePassenger(String id, String firstname, String lastname, String year, String month, String day, String phoneCode, String phone, String country) {
         try {
             long longId;
 
@@ -89,18 +90,20 @@ public class CreatePassengerControllerResponse {
                 }
             }
 
-            Passenger newPassenger = CreatePassengerController.createPassenger(longId, firstname.trim(), lastname.trim(), birthDate, intPhoneCode, longPhone, country.trim());
+            Passenger passengerToUpdate = ExistInstancePassengerController.obtainPassenger(longId);
 
-            if (newPassenger == null) {
-                return new Response("Error inesperado durante la creación del pasajero", Status.INTERNAL_SERVER_ERROR);
+            if (passengerToUpdate == null) {
+                return new Response("Pasajero no encontrado para actualizar.", Status.NOT_FOUND);
             }
 
-            if (!AddPassengerController.add(newPassenger)) {
-                return new Response("Un pasajero con ese ID ya existe.", Status.BAD_REQUEST);
+            boolean updatePassengerController = UpdatePassengerController.UpdatePassenger(passengerToUpdate, firstname.trim(), lastname.trim(), birthDate, intPhoneCode, longPhone, country.trim());
+            if (!updatePassengerController) {
+                return new Response("Error inesperado durante la actualización del pasajero", Status.INTERNAL_SERVER_ERROR);
             }
-            return new Response("Pasajero creado exitosamente.", Status.CREATED, new Passenger(newPassenger));
+
+            return new Response("Datos del pasajero actualizados exitosamente.", Status.OK, new Passenger(passengerToUpdate));
         } catch (Exception ex) {
-            return new Response("Error inesperado durante la creación del pasajero: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
+            return new Response("Error inesperado durante la actualización del pasajero: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
     }
 }

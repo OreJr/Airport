@@ -1,0 +1,26 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package core.controllers.passengerController;
+
+/**
+ *
+ * @author OreJr
+ */
+public class ValidNumberController {
+
+    public static boolean isValidNumber(int intValue) {
+        if (intValue < 0 || String.valueOf(intValue).length() > 3) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isValidNumber(long longValue) {
+        if (longValue < 0 || String.valueOf(longValue).length() > 11) {
+            return false;
+        }
+        return true;
+    }
+}
