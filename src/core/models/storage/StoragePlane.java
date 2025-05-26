@@ -1,42 +1,32 @@
 package core.models.storage;
 
-import core.models.Plane;
+import core.models.IPlane; // Usar la interfaz
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * Gestiona el almacenamiento en memoria para objetos de tipo Avión (Plane) utilizando un ArrayList.
- *
- * @author JorgeDuarte
- */
-public class StoragePlane {
-    private static StoragePlane instance;
-    private List<Plane> planesList;
+public class StoragePlane implements IPlaneStorage {
+    private static IPlaneStorage instance;
+    private List<IPlane> planesList; // Almacena la interfaz
 
     private StoragePlane() {
         planesList = new ArrayList<>();
     }
 
-    /**
-     * Obtiene la instancia única (Singleton) de StoragePlane.
-     * @return La instancia única de StoragePlane.
-     */
-    public static synchronized StoragePlane getInstance() {
+    public static synchronized IPlaneStorage getInstance() {
         if (instance == null) {
             instance = new StoragePlane();
         }
         return instance;
     }
 
-    /**
-     * Verifica si ya existe un avión con el ID proporcionado.
-     * @param id El ID del avión a verificar.
-     * @return true si un avión con ese ID existe, false en caso contrario.
-     */
-    public boolean planeExists(String id) {
-        for (Plane p : planesList) {
+    @Override
+    public boolean exists(String id) {
+        for (IPlane p : planesList) {
             if (p.getId().equals(id)) {
                 return true;
             }
@@ -44,67 +34,49 @@ public class StoragePlane {
         return false;
     }
 
-    /**
-     * Añade un nuevo avión al almacenamiento si el ID es único.
-     * @param plane El avión a añadir.
-     * @return true si el avión fue añadido exitosamente, false si ya existe un avión con el mismo ID.
-     */
-    public boolean addPlane(Plane plane) {
-        if (planeExists(plane.getId())) {
-            return false; 
+    @Override
+    public boolean add(IPlane plane) { // Acepta la interfaz
+        if (plane == null || exists(plane.getId())) {
+            return false;
         }
-        planesList.add(plane);
+        planesList.add(plane); // Añade la instancia de la interfaz
         return true;
     }
 
-    /**
-     * Recupera una copia del avión con el ID especificado.
-     * @param id El ID del avión a recuperar.
-     * @return Una copia del objeto Plane si se encuentra, o null en caso contrario.
-     */
-    public Plane getPlane(String id) {
-        for (Plane p : planesList) {
+    @Override
+    public IPlane getOriginal(String id) { // Devuelve la interfaz
+        for (IPlane p : planesList) {
             if (p.getId().equals(id)) {
-                return new Plane(p); 
+                return p;
             }
         }
         return null;
     }
 
-    /**
-     * Recupera el objeto Avión original con el ID especificado.
-     * Este método es usado internamente por los controladores.
-     * @param id El ID del avión a recuperar.
-     * @return El objeto Plane original si se encuentra, o null en caso contrario.
-     */
-    public Plane getOriginalPlane(String id) {
-        for (Plane p : planesList) {
-            if (p.getId().equals(id)) {
-                return p; 
-            }
+    @Override
+    public IPlane get(String id) { // Devuelve la interfaz (copia)
+        IPlane originalPlane = getOriginal(id);
+        if (originalPlane != null) {
+            return originalPlane.copy(); // Usa el método copy() del modelo
         }
         return null;
     }
 
-    /**
-     * Recupera una lista de copias de todos los aviones, ordenada por ID.
-     * @return Una nueva lista conteniendo copias de todos los aviones almacenados.
-     */
-    public List<Plane> getAllPlanes() {
-        List<Plane> copiedList = new ArrayList<>();
-        for (Plane p : planesList) {
-            copiedList.add(new Plane(p));
+    @Override
+    public List<IPlane> getAll() { // Devuelve lista de interfaces (copias)
+        List<IPlane> copiedList = new ArrayList<>();
+        for (IPlane p : planesList) {
+            copiedList.add(p.copy()); // Usa el método copy()
         }
-        Collections.sort(copiedList, Comparator.comparing(Plane::getId));
+        Collections.sort(copiedList, Comparator.comparing(IPlane::getId));
         return copiedList;
     }
 
-    public List<String> getAllIdPlanes() {
-        List<Plane> planes = getAllPlanes();
-      List<String> ids = new ArrayList<>();
-      for (Plane plane: planes){
-          ids.add(plane.getId());
-      }
-      return ids;
+    @Override
+    public List<String> getAllEntityIds() {
+        return planesList.stream()
+                .map(IPlane::getId) // Llama al método de la interfaz
+                .sorted()
+                .collect(Collectors.toList());
     }
 }

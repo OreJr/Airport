@@ -1,42 +1,32 @@
 package core.models.storage;
 
-import core.models.Location;
+import core.models.ILocation; // Usar la interfaz
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * Gestiona el almacenamiento en memoria para objetos de tipo Ubicación (Location) utilizando un ArrayList.
- *
- * @author JorgeDuarte and OreJr
- */
-public class StorageLocation {
-    private static StorageLocation instance;
-    private List<Location> locationsList;
+public class StorageLocation implements ILocationStorage {
+    private static ILocationStorage instance;
+    private List<ILocation> locationsList; // Almacena la interfaz
 
     private StorageLocation() {
         locationsList = new ArrayList<>();
     }
 
-    /**
-     * Obtiene la instancia única (Singleton) de StorageLocation.
-     * @return La instancia única de StorageLocation.
-     */
-    public static synchronized StorageLocation getInstance() {
+    public static synchronized ILocationStorage getInstance() {
         if (instance == null) {
             instance = new StorageLocation();
         }
         return instance;
     }
 
-    /**
-     * Verifica si ya existe una ubicación con el ID de aeropuerto proporcionado.
-     * @param airportId El ID del aeropuerto a verificar.
-     * @return true si una ubicación con ese ID existe, false en caso contrario.
-     */
-    public boolean locationExists(String airportId) {
-        for (Location loc : locationsList) {
+    @Override
+    public boolean exists(String airportId) {
+        for (ILocation loc : locationsList) {
             if (loc.getAirportId().equals(airportId)) {
                 return true;
             }
@@ -44,67 +34,49 @@ public class StorageLocation {
         return false;
     }
 
-    /**
-     * Añade una nueva ubicación al almacenamiento si el ID de aeropuerto es único.
-     * @param location La ubicación a añadir.
-     * @return true si la ubicación fue añadida exitosamente, false si ya existe una ubicación con el mismo ID.
-     */
-    public boolean addLocation(Location location) {
-        if (locationExists(location.getAirportId())) {
-            return false; 
+    @Override
+    public boolean add(ILocation location) { // Acepta la interfaz
+        if (location == null || exists(location.getAirportId())) {
+            return false;
         }
-        locationsList.add(location);
+        locationsList.add(location); // Añade la instancia de la interfaz
         return true;
     }
 
-    /**
-     * Recupera una copia de la ubicación con el ID de aeropuerto especificado.
-     * @param airportId El ID del aeropuerto de la ubicación a recuperar.
-     * @return Una copia del objeto Location si se encuentra, o null en caso contrario.
-     */
-    public Location getLocation(String airportId) {
-        for (Location loc : locationsList) {
+    @Override
+    public ILocation getOriginal(String airportId) { // Devuelve la interfaz
+        for (ILocation loc : locationsList) {
             if (loc.getAirportId().equals(airportId)) {
-                return new Location(loc); 
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * Recupera el objeto Ubicación original con el ID de aeropuerto especificado.
-     * Este método es usado internamente por los controladores.
-     * @param airportId El ID del aeropuerto de la ubicación a recuperar.
-     * @return El objeto Location original si se encuentra, o null en caso contrario.
-     */
-    public Location getOriginalLocation(String airportId) {
-        for (Location loc : locationsList) {
-            if (loc.getAirportId().equals(airportId)) {
-                return loc; 
+                return loc;
             }
         }
         return null;
     }
 
-    /**
-     * Recupera una lista de copias de todas las ubicaciones, ordenada por ID de aeropuerto.
-     * @return Una nueva lista conteniendo copias de todas las ubicaciones almacenadas.
-     */
-    public List<Location> getAllLocations() {
-        List<Location> copiedList = new ArrayList<>();
-        for (Location loc : locationsList) {
-            copiedList.add(new Location(loc)); 
+    @Override
+    public ILocation get(String airportId) { // Devuelve la interfaz (copia)
+        ILocation originalLocation = getOriginal(airportId);
+        if (originalLocation != null) {
+            return originalLocation.copy(); // Usa el método copy() del modelo
         }
-        Collections.sort(copiedList, Comparator.comparing(Location::getAirportId));
+        return null;
+    }
+
+    @Override
+    public List<ILocation> getAll() { // Devuelve lista de interfaces (copias)
+        List<ILocation> copiedList = new ArrayList<>();
+        for (ILocation loc : locationsList) {
+            copiedList.add(loc.copy()); // Usa el método copy()
+        }
+        Collections.sort(copiedList, Comparator.comparing(ILocation::getAirportId));
         return copiedList;
     }
 
-    public List<String> getAllIdLocations() {
-        List<Location> locations = getAllLocations();
-       List<String> ids = new ArrayList<>();
-      for (Location location: locations){
-          ids.add(location.getAirportId());
-      }
-      return ids;
+    @Override
+    public List<String> getAllEntityIds() {
+        return locationsList.stream()
+                .map(ILocation::getAirportId) // Llama al método de la interfaz
+                .sorted()
+                .collect(Collectors.toList());
     }
 }

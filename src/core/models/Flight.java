@@ -1,32 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package core.models;
 
+import core.utils.CopyContext;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author edangulo
- */
-public class Flight {
+public class Flight implements IFlight {
     
     private final String id;
-    private List<Passenger> passengers; 
-    private Plane plane;
-    private Location departureLocation;
-    private Location scaleLocation;
-    private Location arrivalLocation;
+    private List<IPassenger> passengers; 
+    private IPlane plane;
+    private ILocation departureLocation;
+    private ILocation scaleLocation;
+    private ILocation arrivalLocation;
     private LocalDateTime departureDate;
     private int hoursDurationArrival;
     private int minutesDurationArrival;
     private int hoursDurationScale;
     private int minutesDurationScale;
     
-    public Flight(String id, Plane plane, Location departureLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival) {
+    public Flight(String id, IPlane plane, ILocation departureLocation, ILocation arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival) {
         this.id = id;
         this.passengers = new ArrayList<>();
         this.plane = plane;
@@ -43,7 +36,7 @@ public class Flight {
         }
     }
 
-    public Flight(String id, Plane plane, Location departureLocation, Location scaleLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival, int hoursDurationScale, int minutesDurationScale) {
+    public Flight(String id, IPlane plane, ILocation departureLocation, ILocation scaleLocation, ILocation arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival, int hoursDurationScale, int minutesDurationScale) {
         this.id = id;
         this.passengers = new ArrayList<>();
         this.plane = plane;
@@ -61,121 +54,50 @@ public class Flight {
         }
     }
     
-    /**
-     * Constructor de copia principal. Usado por los controladores para devolver una copia independiente.
-     * Este constructor inicia una copia "superficial controlada" de las entidades Plane y Passenger
-     * para evitar la recursión infinita que causa StackOverflowError.
-     * @param originalInstance La instancia original de Flight a copiar.
-     */
-    public Flight(Flight originalInstance) {
-        this.id = originalInstance.id;
-        this.departureDate = originalInstance.departureDate;
-        this.hoursDurationArrival = originalInstance.hoursDurationArrival;
-        this.minutesDurationArrival = originalInstance.minutesDurationArrival;
-        this.hoursDurationScale = originalInstance.hoursDurationScale;
-        this.minutesDurationScale = originalInstance.minutesDurationScale;
-
-        // Las localizaciones son simples y no causan ciclos, se copian normalmente.
-        if (originalInstance.departureLocation != null) {
-            this.departureLocation = new Location(originalInstance.departureLocation);
-        }
-        if (originalInstance.arrivalLocation != null) {
-            this.arrivalLocation = new Location(originalInstance.arrivalLocation);
-        }
-        if (originalInstance.scaleLocation != null) {
-            this.scaleLocation = new Location(originalInstance.scaleLocation);
-        }
-
-        // Para el avión, usamos el constructor de copia contextual de Plane que NO copia su lista de vuelos.
-        if (originalInstance.plane != null) {
-            this.plane = new Plane(originalInstance.plane, true); // true indica una copia superficial de la lista de vuelos del avión
-        }
-        
-        // Para los pasajeros, usamos el constructor de copia contextual de Passenger que NO copia su lista de vuelos.
+    private Flight(String id, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival, int hoursDurationScale, int minutesDurationScale) {
+        this.id = id;
+        this.departureDate = departureDate;
+        this.hoursDurationArrival = hoursDurationArrival;
+        this.minutesDurationArrival = minutesDurationArrival;
+        this.hoursDurationScale = hoursDurationScale;
+        this.minutesDurationScale = minutesDurationScale;
         this.passengers = new ArrayList<>();
-        if (originalInstance.passengers != null) {
-            for(Passenger p_original : originalInstance.passengers) {
-                this.passengers.add(new Passenger(p_original, true)); // true indica una copia superficial de la lista de vuelos del pasajero
-            }
-        }
     }
 
-    /**
-     * Constructor de copia contextual, llamado cuando un Pasajero está siendo copiado.
-     * Se asegura de que el pasajero en la lista de este vuelo sea la copia del pasajero que se está creando,
-     * y que otros pasajeros y el avión se copien de forma superficial para evitar ciclos.
-     * @param originalInstance El Vuelo original a copiar.
-     * @param passengerContext La instancia de Pasajero (copia) que está "conteniendo" esta copia de Vuelo.
-     */
-    protected Flight(Flight originalInstance, Passenger passengerContext) {
-        this.id = originalInstance.id;
-        this.departureDate = originalInstance.departureDate;
-        this.hoursDurationArrival = originalInstance.hoursDurationArrival;
-        this.minutesDurationArrival = originalInstance.minutesDurationArrival;
-        this.hoursDurationScale = originalInstance.hoursDurationScale;
-        this.minutesDurationScale = originalInstance.minutesDurationScale;
-
-        if (originalInstance.departureLocation != null) this.departureLocation = new Location(originalInstance.departureLocation);
-        if (originalInstance.arrivalLocation != null) this.arrivalLocation = new Location(originalInstance.arrivalLocation);
-        if (originalInstance.scaleLocation != null) this.scaleLocation = new Location(originalInstance.scaleLocation);
-
-        // Copia superficial del avión
-        if (originalInstance.plane != null) {
-            this.plane = new Plane(originalInstance.plane, true); 
-        }
-        
-        this.passengers = new ArrayList<>();
-        boolean passengerContextAdded = false;
-        if (originalInstance.passengers != null) {
-            for (Passenger p_original : originalInstance.passengers) {
-                if (p_original.getId() == passengerContext.getId()) {
-                    this.passengers.add(passengerContext); // Usar la copia del pasajero que ya se está creando
-                    passengerContextAdded = true;
-                } else {
-                    // Otros pasajeros en la lista original del vuelo se copian superficialmente
-                    this.passengers.add(new Passenger(p_original, true)); 
-                }
-            }
-        }
-        // Si el passengerContext no estaba en la lista original de pasajeros del vuelo original,
-        // pero este vuelo se está copiando *para* ese passengerContext, debería añadirse.
-        // Sin embargo, la lógica de addFlight en Passenger ya maneja la adición del vuelo al pasajero.
-        // Esta lógica asegura que si el vuelo original contenía al pasajero original, la copia del vuelo contendrá la copia del pasajero.
+    @Override
+    public String getId() { return id; }
+    
+    @Override
+    public List<IPassenger> getPassengers() { 
+        return new ArrayList<>(this.passengers);
     }
     
-    /**
-     * Constructor de copia contextual, llamado cuando un Avión está siendo copiado.
-     * Se asegura de que el avión de este vuelo sea la copia del avión que se está creando,
-     * y que los pasajeros se copien de forma superficial para evitar ciclos.
-     * @param originalInstance El Vuelo original a copiar.
-     * @param planeContext La instancia de Avión (copia) que está "conteniendo" esta copia de Vuelo.
-     */
-    protected Flight(Flight originalInstance, Plane planeContext) {
-        this.id = originalInstance.id;
-        this.departureDate = originalInstance.departureDate;
-        this.hoursDurationArrival = originalInstance.hoursDurationArrival;
-        this.minutesDurationArrival = originalInstance.minutesDurationArrival;
-        this.hoursDurationScale = originalInstance.hoursDurationScale;
-        this.minutesDurationScale = originalInstance.minutesDurationScale;
-
-        if (originalInstance.departureLocation != null) this.departureLocation = new Location(originalInstance.departureLocation);
-        if (originalInstance.arrivalLocation != null) this.arrivalLocation = new Location(originalInstance.arrivalLocation);
-        if (originalInstance.scaleLocation != null) this.scaleLocation = new Location(originalInstance.scaleLocation);
-
-        this.plane = planeContext; // Usar la copia del avión que ya se está creando
-        
-        this.passengers = new ArrayList<>();
-        if (originalInstance.passengers != null) {
-            for (Passenger p_original : originalInstance.passengers) {
-                // Copia superficial de los pasajeros
-                this.passengers.add(new Passenger(p_original, true)); 
-            }
-        }
-    }
+    @Override
+    public IPlane getPlane() { return plane; }
+    @Override
+    public ILocation getDepartureLocation() { return departureLocation; }
+    @Override
+    public ILocation getScaleLocation() { return scaleLocation; }
+    @Override
+    public ILocation getArrivalLocation() { return arrivalLocation; }
+    @Override
+    public LocalDateTime getDepartureDate() { return departureDate; }
+    @Override
+    public void setDepartureDate(LocalDateTime departureDate) { this.departureDate = departureDate; }
+    @Override
+    public int getHoursDurationArrival() { return hoursDurationArrival; }
+    @Override
+    public int getMinutesDurationArrival() { return minutesDurationArrival; }
+    @Override
+    public int getHoursDurationScale() { return hoursDurationScale; }
+    @Override
+    public int getMinutesDurationScale() { return minutesDurationScale; }
     
-    public void addPassenger(Passenger passenger) {
+    @Override
+    public void addPassenger(IPassenger passenger) {
+        if (passenger == null) return;
         boolean exists = false;
-        for (Passenger existingPassenger : this.passengers) {
+        for (IPassenger existingPassenger : this.passengers) {
             if (existingPassenger.getId() == passenger.getId()) {
                 exists = true;
                 break;
@@ -186,19 +108,44 @@ public class Flight {
         }
     }
     
-    public List<Passenger> getPassengers() { return new ArrayList<>(this.passengers); }
-    public String getId() { return id; }
-    public Location getDepartureLocation() { return departureLocation; }
-    public Location getScaleLocation() { return scaleLocation; }
-    public Location getArrivalLocation() { return arrivalLocation; }
-    public LocalDateTime getDepartureDate() { return departureDate; }
-    public int getHoursDurationArrival() { return hoursDurationArrival; }
-    public int getMinutesDurationArrival() { return minutesDurationArrival; }
-    public int getHoursDurationScale() { return hoursDurationScale; }
-    public int getMinutesDurationScale() { return minutesDurationScale; }
-    public Plane getPlane() { return plane; }
-    public void setDepartureDate(LocalDateTime departureDate) { this.departureDate = departureDate; }
+    @Override
     public LocalDateTime calculateArrivalDate() { if (this.departureDate == null) return null; return departureDate.plusHours(hoursDurationScale).plusHours(hoursDurationArrival).plusMinutes(minutesDurationScale).plusMinutes(minutesDurationArrival); }
+    @Override
     public void delay(int hours, int minutes) { if (this.departureDate == null) return; this.departureDate = this.departureDate.plusHours(hours).plusMinutes(minutes); }
-    public int getNumPassengers() { return passengers.size(); }
+    @Override
+    public int getNumPassengers() { return this.passengers.size(); }
+
+    @Override
+    public IFlight copy(CopyContext context) {
+        IFlight existingCopy = context.getCopied(this);
+        if (existingCopy != null) {
+            return existingCopy;
+        }
+
+        Flight newFlight = new Flight(this.id, this.departureDate, this.hoursDurationArrival, this.minutesDurationArrival, this.hoursDurationScale, this.minutesDurationScale);
+        context.registerCopy(this, newFlight); // Registrar la copia ANTES de copiar campos referenciados
+
+        if (this.departureLocation != null) {
+            newFlight.departureLocation = this.departureLocation.copy(context);
+        }
+        if (this.arrivalLocation != null) {
+            newFlight.arrivalLocation = this.arrivalLocation.copy(context);
+        }
+        if (this.scaleLocation != null) {
+            newFlight.scaleLocation = this.scaleLocation.copy(context);
+        }
+
+        if (this.plane != null) {
+            newFlight.plane = this.plane.copy(context);
+        }
+
+        if (this.passengers != null) {
+            for (IPassenger originalPassenger : this.passengers) {
+                if (originalPassenger != null) {
+                    newFlight.addPassenger(originalPassenger.copy(context));
+                }
+            }
+        }
+        return newFlight;
+    }
 }

@@ -1,14 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package core.models;
 
-/**
- *
- * @author edangulo
- */
-public class Location {
+import core.utils.CopyContext;
+
+public class Location implements ILocation {
     
     private final String airportId;
     private String airportName;
@@ -26,37 +20,27 @@ public class Location {
         this.airportLongitude = airportLongitude;
     }
 
-    // Constructor de copia (necesario para el patrón Prototype)
-    public Location(Location originalInstance) {
-        this.airportId = originalInstance.airportId;
-        this.airportName = originalInstance.airportName;
-        this.airportCity = originalInstance.airportCity;
-        this.airportCountry = originalInstance.airportCountry;
-        this.airportLatitude = originalInstance.airportLatitude;
-        this.airportLongitude = originalInstance.airportLongitude;
-    }
+    @Override
+    public String getAirportId() { return airportId; }
+    @Override
+    public String getAirportName() { return airportName; }
+    @Override
+    public String getAirportCity() { return airportCity; }
+    @Override
+    public String getAirportCountry() { return airportCountry; }
+    @Override
+    public double getAirportLatitude() { return airportLatitude; }
+    @Override
+    public double getAirportLongitude() { return airportLongitude; }
 
-    public String getAirportId() {
-        return airportId;
-    }
-
-    public String getAirportName() {
-        return airportName;
-    }
-
-    public String getAirportCity() {
-        return airportCity;
-    }
-
-    public String getAirportCountry() {
-        return airportCountry;
-    }
-
-    public double getAirportLatitude() {
-        return airportLatitude;
-    }
-
-    public double getAirportLongitude() {
-        return airportLongitude;
+    @Override
+    public ILocation copy(CopyContext context) {
+        ILocation existingCopy = context.getCopied(this);
+        if (existingCopy != null) {
+            return existingCopy;
+        }
+        Location newLocation = new Location(this.airportId, this.airportName, this.airportCity, this.airportCountry, this.airportLatitude, this.airportLongitude);
+        context.registerCopy(this, newLocation);
+        return newLocation;
     }
 }
